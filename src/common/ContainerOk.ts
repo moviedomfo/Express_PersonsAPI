@@ -1,5 +1,5 @@
 import PersonsService from "@app/Persons.service";
-import PersonsController from "@infra/controllers/PersonsPub.controller";
+import PersonsController from "@infra/controllers/Persons.controller";
 import CustomersRepository from "@infra/repos/CustomersSQL.repo";
 import { createContainer, asClass, InjectionMode } from "awilix";
 

@@ -1,7 +1,7 @@
 import checkTokenMeddeware from "@common/auth.middleware";
 import Container from "@common/ContainerOk";
-import PersonsController from "@infra/controllers/PersonsPub.controller";
 import express from "express";
+import  {PersonsController} from "@infra/controllers/Persons.controller"
 export const personRouter = express.Router();
 
 const PersonsController: PersonsController = Container.resolve("personsController") as PersonsController;

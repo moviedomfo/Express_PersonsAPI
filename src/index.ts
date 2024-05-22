@@ -7,7 +7,7 @@ import {notFoundHandler} from "@common/not-found.middleware";
 import {ExpressErrorHandler} from "./common/ErrorHandle/ExpressErrorHandler";
 import swaggerUi from "swagger-ui-express";
 import {logsMiddle} from "@common/log.middlewar";
-import {personRouter} from "@infra/router/personPub.router";
+import {personRouter} from "@infra/router/persons.router";
 import {AppConstants} from "@common/CommonConstants";
 import "module-alias/register";
 import "dotenv/config";

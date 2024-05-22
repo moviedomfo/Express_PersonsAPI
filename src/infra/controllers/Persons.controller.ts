@@ -11,7 +11,7 @@ export default class PersonsController {
       const { name, lastname, page, pageSize } = req.query;
       const currentPage = parseInt(page as string) || 1; // Página actual
       const limit = parseInt(pageSize as string) || 10; // Tamaño de página
-      const result = await this.personsService.GetAll(name as string,currentPage, limit);
+      const result = await this.personsService.GetAll(name as string, currentPage, limit);
 
       if (result) res.status(200).send(result);
       else res.status(204).send();

@@ -3,6 +3,7 @@ import { ImessageDto } from "@app/DTOs/MessageDto";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
 import { or } from "sequelize";
+import { UpdatePersonDto } from "./DTOs/PersonDto";
 
 // @Route("PersonsService")
 export default class PersonsService implements IPersonsService {
@@ -52,7 +53,7 @@ export default class PersonsService implements IPersonsService {
    * @param person
    * @origin this params can be changed if you need to set other topic type for kafka
    */
-  public async Update(person: PersonBE): Promise<void> {
+  public async Update(person: UpdatePersonDto): Promise<void> {
     try {
       await this.personRepo.Update(person);
 
