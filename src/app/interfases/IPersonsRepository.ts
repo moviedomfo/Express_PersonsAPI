@@ -1,3 +1,4 @@
+import { UpdatePersonDto } from "@app/DTOs/PersonDto";
 import {PersonBE} from "@domain/Entities/PersonBE";
 
 export interface IPersonsRepository {
@@ -5,5 +6,6 @@ export interface IPersonsRepository {
   Insert: (req: PersonBE) => Promise<string>;
   GetById: (id: string) => Promise<PersonBE>;
   GetAll: (name?: string,page?: number , pageSize?: number ) => Promise<PersonBE[]>;
-  Update: (req: PersonBE) => Promise<void>;
+  Update: (req: UpdatePersonDto) => Promise<void>;
+
 }

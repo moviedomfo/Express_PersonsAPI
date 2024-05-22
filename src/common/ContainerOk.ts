@@ -16,19 +16,19 @@ const Container = createContainer({
 
 Container.register({
   customersRepo: asClass(CustomersRepository).scoped(),
-  
-  
-  
-  
+
+
+
+
   personsService: asClass(PersonsService).scoped(),
-  personsPubController: asClass(PersonsController).scoped(),
+  PersonsController: asClass(PersonsController).scoped(),
 
 
 
 });
 
 export const personsService = Container.resolve("personsService");
-export const personsPubController = Container.resolve("personsController");
+export const PersonsController = Container.resolve("personsController");
 
 
 

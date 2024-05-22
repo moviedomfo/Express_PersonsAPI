@@ -31,7 +31,17 @@ export default class PersonsController {
       next(e);
     }
   };
+  public Update = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      let person: CreatePersonDto = JSON.parse(JSON.stringify(req.body));
 
+      await this.personsService.Create(person);
+
+      res.status(200).send();
+    } catch (e) {
+      next(e);
+    }
+  };
 
   public GetById = async (req: Request, res: Response, next: NextFunction) => {
     try {

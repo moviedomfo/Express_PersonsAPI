@@ -6,6 +6,7 @@ import { DateFunctions } from "@common/helpers/dateFunctions";
 import { ExeptionFunctions } from "@common/helpers/ExeptionFunctions";
 import { LogFunctions } from "@common/helpers/logFunctions";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
+import { UpdatePersonDto } from "@app/DTOs/PersonDto";
 
 /**Persist to mongodb Persons */
 export default class CustomersRepository implements IPersonsRepository {
@@ -46,24 +47,31 @@ export default class CustomersRepository implements IPersonsRepository {
     });
   }
 
-  public Update(req: PersonBE): Promise<void> {
-    return new Promise<string>(async (resolve, reject) => {
+  public Update(dto: UpdatePersonDto): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
 
       const personSchema = {
-        Id: req.Id,
-        Name: req.Name,
-        Lastname: req.Lastname,
-        City: req.City,
-        Phone: req.Phone,
-        DocNumber: req.DocNumber,
-        kafka_Topic: "Customers", //req.kafka_Topic,
-        GeneratedDate: req.GeneratedDate,
-        CreatedDate: req.CreatedDate ? req.CreatedDate : new Date(),
-        CloudId: "Comerce",
+        Code: dto.Code,
+        Slug: dto.Slug,
+        Name: dto.Name,
+        Lastname: dto.Lastname,
+        DocTypeId: dto.DocTypeId,
+        DocNumber: dto.DocNumber,
+        DateOfBirth: dto.DateOfBirth,
+        Photo: dto.Photo,
+        DischargeDate: dto.DischargeDate,
+        CategoryId: dto.CategoryId,
+        GenderId: dto.GenderId,
+        IsNatural: dto.IsNatural,
+        Enabled: dto.Enabled
       };
 
+      const updateOptions = {
+        where: { id: dto.Id },
+        returning: true // Esto hará que Sequelize devuelva los registros afectados
+      };
       try {
-        const cp = await PersonsSchema.update(personSchema, {});
+        const [affectedCount] = await PersonsSchema.update(personSchema, updateOptions);
 
         resolve();
       } catch (err) {
