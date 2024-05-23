@@ -29,7 +29,6 @@ PersonsSchema.init(
     GenderId: { type: DataTypes.INTEGER, allowNull: false },
     StateId: { type: DataTypes.INTEGER, allowNull: true },
 
-    IsNatural: { type: DataTypes.BOOLEAN, allowNull: false },
     Enabled: { type: DataTypes.BOOLEAN, allowNull: false ,defaultValue:true},
     CreatedDate: {
       type: DataTypes.DATE,

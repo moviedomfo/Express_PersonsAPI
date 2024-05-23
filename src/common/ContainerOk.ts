@@ -1,7 +1,7 @@
-import PersonsService from "@app/Persons.service";
-import PersonsController from "@infra/controllers/Persons.controller";
-import CustomersRepository from "@infra/repos/CustomersSQL.repo";
 import { createContainer, asClass, InjectionMode } from "awilix";
+import PersonsService from "@app/Persons.service";
+import CustomersRepository from "@infra/repos/CustomersSQL.repo";
+import PersonsController from "@infra/controllers/Persons.controller"
 
 
 
@@ -15,20 +15,18 @@ const Container = createContainer({
 
 
 Container.register({
-  customersRepo: asClass(CustomersRepository).scoped(),
-
-
-
+  personsRepo: asClass(CustomersRepository).scoped(),
 
   personsService: asClass(PersonsService).scoped(),
-  PersonsController: asClass(PersonsController).scoped(),
+  personsController: asClass(PersonsController).scoped(),
 
 
 
 });
 
 export const personsService = Container.resolve("personsService");
-export const PersonsController = Container.resolve("personsController");
+export const personsController = Container.resolve("personsController");
+export const personsRepo = Container.resolve("personsRepo");
 
 
 

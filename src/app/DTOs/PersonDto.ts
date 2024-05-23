@@ -11,7 +11,7 @@ export class CreatePersonDto {
   DischargeDate?: Date;
   CategoryId?: number;
   GenderId?: number;
-  IsNatural?: boolean;
+  
 
 }
 
@@ -28,11 +28,11 @@ export class UpdatePersonDto {
   DocTypeId?: number;
   DocNumber?: string;
   DateOfBirth?: Date;
+  
   Photo?: string;
   DischargeDate?: Date;
   CategoryId?: number;
   GenderId?: number;
-  IsNatural?: boolean;
   Enabled?: boolean;
   constructor(init?: Partial<UpdatePersonDto>) {
     Object.assign(this, init);

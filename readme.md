@@ -4,36 +4,21 @@ API Gateway to take all messages from any publisher and send to corespondents ka
 
 ## Table of Contents
 
-- [Intro](#Intro)
-- [Push message to kafka topic ](#Push-message-to-kafka-topic)
+- [Intro](#intro)
+- [Push message to kafka topic](#Push-message-to-kafka-topic)
 - [Database](#mongodb-hosted)
-- [Run locally](#Run-locally)
-- [Dockerize](#Dockerize)
+- [Run locally](#run-locally)
+- [Dockerize](#dockerize)
+- [Generating data model](#models-generation)
 
 ## Intro
 
-This API provide two principal enpoints:
-
-## Push message to kafka topic
-
-- %URL_BASE%/api/persons/customers
-- %URL_BASE%/api/persons/persons
-- %URL_BASE%/api/products
-
-This POST endpoints recive an input with this format:
-
-```
-{
-  "origin": "POSTMAN",
-  "content": "any related json to /commerce/xxxxx use case",
-}
-
-```
+This API provide person demo
 
 ## Run locally
 
 [1] Firs clone the repo locally
-[2] run -> pnpm install or yarn install
+[2] run -> yarn install
 [3] run dev command
 
     ```
@@ -41,7 +26,7 @@ This POST endpoints recive an input with this format:
     ```
 
 [4] Additionally if you have dockerhub installed. We leave you a dockerfil ready!!
-pleasse ref to [Dockerize](#Dockerize)
+pleasse ref to [Dockerize](#dockerize)
 
 # Microservices
 
@@ -76,7 +61,7 @@ You can use docker to deploy the api server. In this releasse we leave a dockerf
   run container maping to comerce_files created volume
 
 - Navigate to this url to check the if correctly docker container is running
-  http://localhost:3008
+  <http://localhost:3008>
 
 # swagger & tsoa
 
@@ -86,11 +71,35 @@ Para documentar los controllers debemos usar tsoa
 
 Hay que ver que tenemos configurado en ./tsoa.json para ver el destino de la transpilacion de las rutas
 
-# RegisterRoutes
+<!-- # RegisterRoutes
 
 To generate Routes class run
-`  pnpm build-tsoa`
+`yarn build-tsoa` -->
 
 ## Important packages used in this app
 
 sequelize, tedious,
+
+## models generation
+
+We have hused sequalize-auto to generate all models from dexisting database
+
+1. first of all you must install :
+
+```
+  yarn add sequelize-auto
+```
+
+2. To generate database run the following cmd
+
+   - For typescript js
+
+     ```
+       yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql -c ./src/seq_db/config -o ./src/seq_db/models
+     ```
+
+   - For typescript
+
+     ```
+     yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql  -o ./src/infra/db/seq-models -l ts
+     ```

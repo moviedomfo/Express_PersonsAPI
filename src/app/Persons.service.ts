@@ -3,17 +3,16 @@ import { ImessageDto } from "@app/DTOs/MessageDto";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
 import { or } from "sequelize";
-import { UpdatePersonDto } from "./DTOs/PersonDto";
+import { CreatePersonDto, UpdatePersonDto } from "./DTOs/PersonDto";
 
 // @Route("PersonsService")
 export default class PersonsService implements IPersonsService {
-  private readonly _personRepo: IPersonsRepository;
-  private readonly _providersRepository: IPersonsRepository;
+  private readonly _personsRepo: IPersonsRepository;
+  
 
-
-  constructor(private readonly personRepo: IPersonsRepository, private readonly providersRepo: IPersonsRepository) {
-    this._personRepo = personRepo;
-    this._providersRepository = providersRepo;
+  constructor(private readonly personsRepo: IPersonsRepository) {
+    this._personsRepo = personsRepo;
+    
   }
 
   /**
@@ -23,13 +22,13 @@ export default class PersonsService implements IPersonsService {
    * @param person
    * @origin Api app caller
    */
-  public async Create(person: PersonBE): Promise<void> {
+  public async Create(person: CreatePersonDto): Promise<void> {
     try {
       // person.CreatedDate = new Date(person.CreatedDate);
       // person.GeneratedDate = new Date(person.GeneratedDate);
 
-      const id = await this.personRepo.Insert(person);
-      const createdPerson = new PersonBE(id);
+      const id = await this._personsRepo.Insert(person);
+      // const createdPerson = new PersonBE(id);
 
       // const msg: IKafkaMessageDto = {
       //   key: person.Id.toString(),
@@ -55,7 +54,7 @@ export default class PersonsService implements IPersonsService {
    */
   public async Update(person: UpdatePersonDto): Promise<void> {
     try {
-      await this.personRepo.Update(person);
+      await this._personsRepo.Update(person);
 
 
     } catch (err) {
@@ -63,16 +62,16 @@ export default class PersonsService implements IPersonsService {
     }
   }
   public async GetById(id: string): Promise<PersonBE> {
-    return this.personRepo.GetById(id);
+    return this._personsRepo.GetById(id);
   }
 
   public async GetAll(name?: string, page?: number, limit?: number): Promise<PersonBE[]> {
-    return await this.personRepo.GetAll(name, page, limit);
+    return await this._personsRepo.GetAll(name, page, limit);
   }
 
 
 
   public async ClearAll(): Promise<void> {
-    return this.personRepo.ClearAll();
+    return this._personsRepo.ClearAll();
   }
 }

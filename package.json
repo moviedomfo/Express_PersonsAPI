@@ -47,6 +47,7 @@
     "openapi-types": ">=7",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.37.3",
+    "sequelize-auto": "^0.8.8",
     "shallow-equal-object": "^1.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
