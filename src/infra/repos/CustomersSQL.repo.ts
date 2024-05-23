@@ -10,7 +10,7 @@ import { CreatePersonDto, UpdatePersonDto } from "@app/DTOs/PersonDto";
 
 import sequelize from "../db/Sequelize-sql-db";
 
-import { initModels, person_addressess, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
+import { initModels, locations, person_addressess, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
 import { Op } from "sequelize";
 
 /**Persist to mongodb Persons */
@@ -127,7 +127,31 @@ export default class PersonsRepository implements IPersonsRepository {
     return new Promise<PersonBE>(async (resolve, reject) => {
       try {
         initModels(sequelize);
-        const res = await persons.findByPk(id);
+        const res = await persons.findByPk(id, {
+          include: [
+            {
+              model: person_addressess,
+              as: 'person_addressesses',
+              include: [
+                {
+                  model: locations,
+                  as: 'City',
+                  attributes: ['Name']
+                },
+                {
+                  model: locations,
+                  as: 'Province',
+                  attributes: ['Name']
+                },
+                {
+                  model: locations,
+                  as: 'Country',
+                  attributes: ['Name']
+                }
+              ]
+            }
+          ]
+        });
         //res.person_addressesses;
         const item: PersonBE = {
           Id: res.Id,
@@ -142,18 +166,9 @@ export default class PersonsRepository implements IPersonsRepository {
           CreatedDate: res.CreatedDate || undefined,
           CreatedUserId: res.CreatedUserId || "",
           Addressess: []
-          // Addressess: res.person_addressesses.map(address => ({
-          //   Id: address.Id,
-          //   Street: address.Street,
-          //   ZipCode: address.ZipCode,
-          //   City: address.City ? address.City.Name : null,
-          //   Province: address.Province ? address.Province.Name : null,
-          //   Country: address.Country ? address.Country.Name : null
-          // }))
+    
         };
-        // item.ad res.person_addressesses.map(p=>{
 
-        // })
         item.Addressess = res.person_addressesses.map(address => ({
           Id: address.Id,
           Street: address.Street,
