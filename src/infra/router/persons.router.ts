@@ -9,7 +9,7 @@ const personsController: PersonsController = Container.resolve("personsControlle
 // personRouter.post("/provider", checkTokenMeddeware, personsController.Create);
 // personRouter.get("/providers/:id", checkTokenMeddeware, personsController.GetProviderById);
 // personRouter.get("/providers", checkTokenMeddeware, personsController.GetAllProviders);
-personRouter.post("/customer", personsController.Create);
-personRouter.get("/customer/:id", personsController.GetById);
-personRouter.put("/customers", personsController.Update);
-personRouter.get("/customers", personsController.GetAll);
+personRouter.post("", personsController.Create);
+personRouter.get("/:id", personsController.GetById);
+personRouter.put("", personsController.Update);
+personRouter.get("", personsController.GetAll);

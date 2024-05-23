@@ -61,7 +61,7 @@ export default class PersonsService implements IPersonsService {
       throw err;
     }
   }
-  public async GetById(id: string): Promise<PersonBE> {
+  public async GetById(id: number): Promise<PersonBE> {
     return this._personsRepo.GetById(id);
   }
 

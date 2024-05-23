@@ -9,9 +9,9 @@ import swaggerUi from "swagger-ui-express";
 import {logsMiddle} from "@common/log.middlewar";
 import {personRouter} from "@infra/router/persons.router";
 import {AppConstants} from "@common/CommonConstants";
-import "module-alias/register";
+//import "module-alias/register";
 import "dotenv/config";
-import "./infra/db/mongo/MondoDatabase";
+
 const packageJson = require("./../package.json");
 
 require("dotenv").config();

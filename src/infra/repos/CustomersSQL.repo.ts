@@ -12,15 +12,14 @@ import sequelize from "../db/Sequelize-sql-db";
 
 import { initModels, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
 import { Op } from "sequelize";
+import { Entity } from "@common/CleanBases/Entity";
 /**Persist to mongodb Persons */
 export default class PersonsRepository implements IPersonsRepository {
 
 
-
-
   public Insert(req: CreatePersonDto): Promise<string> {
 
- 
+
     return new Promise<string>(async (resolve, reject) => {
 
 
@@ -75,10 +74,8 @@ export default class PersonsRepository implements IPersonsRepository {
       const personSchema = {
         Name: req.Name,
         Lastname: req.Lastname,
-        City: req.City,
-        Phone: req.Phone,
+   
         DocNumber: req.DocNumber,
-        GeneratedDate: req.GeneratedDate,
         CreatedDate: req.CreatedDate ? req.CreatedDate : new Date(),
         CloudId: "Comerce",
       };
@@ -125,22 +122,27 @@ export default class PersonsRepository implements IPersonsRepository {
     });
   }
 
-  public GetById(id: string): Promise<PersonBE> {
+
+  public GetById(id: number): Promise<PersonBE> {
     return new Promise<PersonBE>(async (resolve, reject) => {
       try {
-        const res = await PersonsSchema.findByPk(id);
-        const person = PersonBE.Create({
-          Id: res.getDataValue("Id"),
-          Name: res.getDataValue("Name"),
-          Lastname: res.getDataValue("LastName"),
-          City: res.getDataValue("LastName"),
-          Phone: res.getDataValue("Phone"),
-          kafka_Topic: res.getDataValue("kafka_Topic"),
-          DocNumber: res.getDataValue("DocNumber"),
-          GeneratedDate: res.getDataValue("GeneratedDate"),
-          CreatedDate: res.getDataValue("CreatedDate"),
-        });
-        resolve(person);
+        initModels(sequelize);
+        const res = await persons.findByPk(id);
+        const item: PersonBE = {
+          Id: res.Id,
+          Slug: res.Slug,
+          Name: res.Name || "",
+          Lastname: res.Lastname || "",
+          DocTypeId: res.DocTypeId || 0,
+          DocNumber: res.DocNumber || "",
+          DateOfBirth: res.DateOfBirth || undefined,
+          GenderId: res.GenderId || 0,
+          Enabled: res.Enabled || false,
+          CreatedDate: res.CreatedDate || undefined,
+          CreatedUserId: res.CreatedUserId || "",
+
+        };
+        resolve(item);
       } catch (error) {
         reject(error);
       }
@@ -148,22 +150,40 @@ export default class PersonsRepository implements IPersonsRepository {
   }
 
 
-  public GetById_(id: string): Promise<PersonBE> {
+
+
+  public GetById_(id: number): Promise<PersonBE> {
     return new Promise<PersonBE>(async (resolve, reject) => {
       try {
         const res = await PersonsSchema.findByPk(id);
-        const person = PersonBE.Create({
-          Id: res.getDataValue("Id"),
-          Name: res.getDataValue("Name"),
-          Lastname: res.getDataValue("LastName"),
-          City: res.getDataValue("LastName"),
-          Phone: res.getDataValue("Phone"),
-          kafka_Topic: res.getDataValue("kafka_Topic"),
-          DocNumber: res.getDataValue("DocNumber"),
-          GeneratedDate: res.getDataValue("GeneratedDate"),
-          CreatedDate: res.getDataValue("CreatedDate"),
-        });
-        resolve(person);
+        // const person = PersonBE.Create({
+        //   Id: res.getDataValue("Id"),
+        //   Name: res.getDataValue("Name"),
+        //   Lastname: res.getDataValue("LastName"),
+        //   City: res.getDataValue("LastName"),
+        //   Phone: res.getDataValue("Phone"),
+        //   kafka_Topic: res.getDataValue("kafka_Topic"),
+        //   DocNumber: res.getDataValue("DocNumber"),
+        //   GeneratedDate: res.getDataValue("GeneratedDate"),
+        //   CreatedDate: res.getDataValue("CreatedDate"),
+        // });
+        const dummyPerson = {
+          Id: 1,
+          Slug: "",
+          Name: 'John',
+          Lastname: 'Doe',
+          DocTypeId: 1,
+          DocNumber: '123456789',
+          DateOfBirth: new Date('1990-01-01'),
+          GenderId: 1,
+          Enabled: true,
+          CreatedDate: new Date(),
+          CreatedUserId: 'admin',
+          City: 'Dummy City',
+          Phone: '1234567890',
+          GeneratedDate: new Date()
+        };
+        resolve(dummyPerson);
       } catch (error) {
         reject(error);
       }
@@ -192,20 +212,30 @@ export default class PersonsRepository implements IPersonsRepository {
           where,
         });
 
-        const persons = res.map((p, _index) => {
-          const object = {
+        const persons = res.map(p => {
+          const item: PersonBE = {
+            // Id: p.getDataValue("Id"),
+            // Name: p.getDataValue("Name"),
+            // Lastname: p.getDataValue("LastName"),
+            // City: p.getDataValue("LastName"),
+            // Phone: p.getDataValue("Phone"),
+            // kafka_Topic: p.getDataValue("kafka_Topic"),
+            // DocNumber: p.getDataValue("DocNumber"),
+            // GeneratedDate: p.getDataValue("GeneratedDate"),
+            // CreatedDate: p.getDataValue("CreatedDate"),
             Id: p.getDataValue("Id"),
-            Name: p.getDataValue("Name"),
-            Lastname: p.getDataValue("LastName"),
-            City: p.getDataValue("LastName"),
-            Phone: p.getDataValue("Phone"),
-            kafka_Topic: p.getDataValue("kafka_Topic"),
-            DocNumber: p.getDataValue("DocNumber"),
-            GeneratedDate: p.getDataValue("GeneratedDate"),
-            CreatedDate: p.getDataValue("CreatedDate"),
+            Slug: "",
+            Name: "",
+            Lastname: "",
+            DocTypeId: 0,
+            DocNumber: "",
+            DateOfBirth: undefined,
+            GenderId: 0,
+            Enabled: false,
+            CreatedDate: undefined,
+            CreatedUserId: "",
           };
-          const person = PersonBE.Create(object);
-          return person;
+          return item;
         });
 
         resolve(persons);

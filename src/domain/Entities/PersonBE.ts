@@ -1,33 +1,21 @@
-import {Entity} from "@common/CleanBases/Entity";
+import { Entity } from "@common/CleanBases/Entity";
 
-export class PersonBE extends Entity<string> {
-  public Name: string;
-  public Lastname: string;
-  public City: string;
-  public Phone: string;
+export class PersonBE {
 
-  public kafka_Topic: string;
-  public DocNumber: string;
-  public GeneratedDate: Date;
-  public CreatedDate: Date;
-
-  // public GetFullName(): string {
-  //   return `${this.Id}  ${this.Lastname} , ${this.Name} from ${this.City}`;
-  // }
-
-  static Create(object: any): PersonBE {
-
-    const {Id,Name,Lastname,City,Phone,kafka_Topic,DocNumber,GeneratedDate,CreatedDate}=object;
-    const person: PersonBE = new PersonBE(Id);
-    person.Name = Name;
-    person.Lastname = Lastname;
-    person.City = City;
-    person.Phone = Phone;
-    person.kafka_Topic = kafka_Topic;
-    person.DocNumber = DocNumber;
-    person.GeneratedDate = GeneratedDate;
-    person.CreatedDate = CreatedDate;
-
-    return person;
-  }
+  Id: number;
+  Code?: number;
+  Slug: string;
+  Name: string;
+  Lastname: string;
+  DocTypeId: number;
+  DocNumber: string;
+  DateOfBirth: Date;
+  Photo?: string;
+  DischargeDate?: Date;
+  CategoryId?: number;
+  GenderId: number;
+  Enabled: boolean;
+  CreatedDate: Date;
+  CreatedUserId: string;
+  client_id?: string;
 }

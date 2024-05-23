@@ -4,7 +4,7 @@ import {PersonBE} from "@domain/Entities/PersonBE";
 export interface IPersonsRepository {
   ClearAll: () => Promise<void>;
   Insert: (req: CreatePersonDto) => Promise<string>;
-  GetById: (id: string) => Promise<PersonBE>;
+  GetById: (id: number) => Promise<PersonBE>;
   GetAll: (name?: string,page?: number , pageSize?: number ) => Promise<PersonBE[]>;
   Update: (req: UpdatePersonDto) => Promise<void>;
 

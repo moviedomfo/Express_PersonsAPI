@@ -20,7 +20,7 @@ export interface IPersonsService {
  * @param id Customer Id
  * @returns 
  */
-  GetById: (id: string) => Promise<PersonBE>;
+  GetById: (id: number) => Promise<PersonBE>;
   
 
   GetAll: (name?: string, page?: number, limit?: number ) => Promise<PersonBE[]>;
