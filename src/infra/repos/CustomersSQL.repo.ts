@@ -10,9 +10,9 @@ import { CreatePersonDto, UpdatePersonDto } from "@app/DTOs/PersonDto";
 
 import sequelize from "../db/Sequelize-sql-db";
 
-import { initModels, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
+import { initModels, person_addressess, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
 import { Op } from "sequelize";
-import { Entity } from "@common/CleanBases/Entity";
+
 /**Persist to mongodb Persons */
 export default class PersonsRepository implements IPersonsRepository {
 
@@ -74,7 +74,7 @@ export default class PersonsRepository implements IPersonsRepository {
       const personSchema = {
         Name: req.Name,
         Lastname: req.Lastname,
-   
+
         DocNumber: req.DocNumber,
         CreatedDate: req.CreatedDate ? req.CreatedDate : new Date(),
         CloudId: "Comerce",
@@ -128,6 +128,7 @@ export default class PersonsRepository implements IPersonsRepository {
       try {
         initModels(sequelize);
         const res = await persons.findByPk(id);
+        //res.person_addressesses;
         const item: PersonBE = {
           Id: res.Id,
           Slug: res.Slug,
@@ -140,8 +141,35 @@ export default class PersonsRepository implements IPersonsRepository {
           Enabled: res.Enabled || false,
           CreatedDate: res.CreatedDate || undefined,
           CreatedUserId: res.CreatedUserId || "",
-
+          Addressess: []
+          // Addressess: res.person_addressesses.map(address => ({
+          //   Id: address.Id,
+          //   Street: address.Street,
+          //   ZipCode: address.ZipCode,
+          //   City: address.City ? address.City.Name : null,
+          //   Province: address.Province ? address.Province.Name : null,
+          //   Country: address.Country ? address.Country.Name : null
+          // }))
         };
+        // item.ad res.person_addressesses.map(p=>{
+
+        // })
+        item.Addressess = res.person_addressesses.map(address => ({
+          Id: address.Id,
+          Street: address.Street,
+          ZipCode: address.ZipCode,
+          City: address.City ? address.City.Name : null,
+          Province: address.Province ? address.Province.Name : null,
+          Country: address.Country ? address.Country.Name : null
+        }))
+
+        // const where = {
+        //   PersonId: {
+        //     [Op.eq]: item.Id,
+        //   },
+        // };
+
+        // person_addressess.findOne();
         resolve(item);
       } catch (error) {
         reject(error);
@@ -152,6 +180,63 @@ export default class PersonsRepository implements IPersonsRepository {
 
 
 
+
+  public async ClearAll(): Promise<void> {
+    return new Promise<void>(async (resolve, _reject) => {
+      const res = await persons.findByPk(32);
+      //PersonsSchema.cl.deleteMany({});
+      resolve();
+    });
+  }
+
+  public async GetAll(name?: string): Promise<PersonBE[]> {
+    const where = {
+      Name: {
+        [Op.like]: name ? `${name}%` : "%",
+      },
+      // kafka_Topic: {
+      //   [Op.eq]: "customers",
+      // },
+    };
+
+    return new Promise<PersonBE[]>(async (resolve, reject) => {
+      try {
+        initModels(sequelize);
+
+        const res = await persons.findAll({
+          where,
+        });
+
+        // const res personList = await PersonsSchema.findAll({
+        //   where,
+        // });
+
+        const personList = res.map(p => {
+          const item: PersonBE = {
+            Id: p.getDataValue("Id"),
+            Name: p.getDataValue("Name"),
+            Lastname: p.getDataValue("Lastname"),
+            Slug: p.getDataValue("Slug"),
+            DocNumber: p.getDataValue("DocNumber"),
+            DateOfBirth: p.getDataValue("DateOfBirth"),
+            CreatedDate: p.getDataValue("CreatedDate"),
+            DocTypeId: p.getDataValue("DocTypeId"),
+            GenderId: p.getDataValue("GenderId"),
+            Enabled: p.getDataValue("Enabled"),
+            CreatedUserId: p.getDataValue("CreatedUserId"),
+          };
+          return item;
+        });
+
+        resolve(personList);
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+
+
+  }
   public GetById_(id: number): Promise<PersonBE> {
     return new Promise<PersonBE>(async (resolve, reject) => {
       try {
@@ -190,58 +275,4 @@ export default class PersonsRepository implements IPersonsRepository {
     });
   }
 
-  public async ClearAll(): Promise<void> {
-    return new Promise<void>((resolve, _reject) => {
-      //PersonsSchema.cl.deleteMany({});
-      resolve();
-    });
-  }
-
-  public async GetAll(name?: string): Promise<PersonBE[]> {
-    const where = {
-      Name: {
-        [Op.like]: name ? `${name}%` : "%",
-      },
-      kafka_Topic: {
-        [Op.eq]: "customers",
-      },
-    };
-    return new Promise<PersonBE[]>(async (resolve, reject) => {
-      try {
-        const res = await PersonsSchema.findAll({
-          where,
-        });
-
-        const persons = res.map(p => {
-          const item: PersonBE = {
-            // Id: p.getDataValue("Id"),
-            // Name: p.getDataValue("Name"),
-            // Lastname: p.getDataValue("LastName"),
-            // City: p.getDataValue("LastName"),
-            // Phone: p.getDataValue("Phone"),
-            // kafka_Topic: p.getDataValue("kafka_Topic"),
-            // DocNumber: p.getDataValue("DocNumber"),
-            // GeneratedDate: p.getDataValue("GeneratedDate"),
-            // CreatedDate: p.getDataValue("CreatedDate"),
-            Id: p.getDataValue("Id"),
-            Slug: "",
-            Name: "",
-            Lastname: "",
-            DocTypeId: 0,
-            DocNumber: "",
-            DateOfBirth: undefined,
-            GenderId: 0,
-            Enabled: false,
-            CreatedDate: undefined,
-            CreatedUserId: "",
-          };
-          return item;
-        });
-
-        resolve(persons);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  }
 }

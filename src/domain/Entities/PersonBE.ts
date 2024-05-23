@@ -18,4 +18,13 @@ export class PersonBE {
   CreatedDate: Date;
   CreatedUserId: string;
   client_id?: string;
+  Addressess?: Person_addressessesDTO[];
+}
+
+export class Person_addressessesDTO {
+  Street: string;
+  ZipCode: string;
+  City: string;
+  Province: string;
+  Country: string;
 }
