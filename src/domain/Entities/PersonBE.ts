@@ -15,8 +15,9 @@ export class PersonBE {
   CategoryId?: number;
   GenderId: number;
   Enabled: boolean;
-  CreatedDate: Date;
-  CreatedUserId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdUserId: string;
   client_id?: string;
   Addressess?: Person_addressessesDTO[];
 }

@@ -8,11 +8,11 @@ import { CreatePersonDto, UpdatePersonDto } from "./DTOs/PersonDto";
 // @Route("PersonsService")
 export default class PersonsService implements IPersonsService {
   private readonly _personsRepo: IPersonsRepository;
-  
+
 
   constructor(private readonly personsRepo: IPersonsRepository) {
     this._personsRepo = personsRepo;
-    
+
   }
 
   /**
@@ -24,7 +24,7 @@ export default class PersonsService implements IPersonsService {
    */
   public async Create(person: CreatePersonDto): Promise<void> {
     try {
-      // person.CreatedDate = new Date(person.CreatedDate);
+      // person.createdAt new Date(person.createdAt);
       // person.GeneratedDate = new Date(person.GeneratedDate);
 
       const id = await this._personsRepo.Insert(person);

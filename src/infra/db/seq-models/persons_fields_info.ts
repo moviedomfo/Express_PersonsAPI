@@ -2,61 +2,61 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 
 export interface persons_fields_infoAttributes {
-  ShortName: string;
-  Description: string;
-  Type: string;
-  SupportedValues: string;
-  Enable: boolean;
-  TenantID: string;
-  Label?: string;
+  short_name: string;
+  description: string;
+  type: string;
+  supported_values: string;
+  eenable: boolean;
+  label?: string;
+  tenant_id: string;
 }
 
-export type persons_fields_infoPk = "ShortName";
+export type persons_fields_infoPk = "short_name";
 export type persons_fields_infoId = persons_fields_info[persons_fields_infoPk];
-export type persons_fields_infoOptionalAttributes = "Enable" | "Label";
+export type persons_fields_infoOptionalAttributes = "eenable" | "label";
 export type persons_fields_infoCreationAttributes = Optional<persons_fields_infoAttributes, persons_fields_infoOptionalAttributes>;
 
 export class persons_fields_info extends Model<persons_fields_infoAttributes, persons_fields_infoCreationAttributes> implements persons_fields_infoAttributes {
-  ShortName!: string;
-  Description!: string;
-  Type!: string;
-  SupportedValues!: string;
-  Enable!: boolean;
-  TenantID!: string;
-  Label?: string;
+  short_name!: string;
+  description!: string;
+  type!: string;
+  supported_values!: string;
+  eenable!: boolean;
+  label?: string;
+  tenant_id!: string;
 
 
   static initModel(sequelize: Sequelize.Sequelize): typeof persons_fields_info {
     return persons_fields_info.init({
-    ShortName: {
+    short_name: {
       type: DataTypes.STRING(50),
       allowNull: false,
       primaryKey: true
     },
-    Description: {
+    description: {
       type: DataTypes.STRING(250),
       allowNull: false
     },
-    Type: {
+    type: {
       type: DataTypes.CHAR(10),
       allowNull: false
     },
-    SupportedValues: {
+    supported_values: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    Enable: {
+    eenable: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
     },
-    TenantID: {
-      type: DataTypes.UUID,
-      allowNull: false
-    },
-    Label: {
+    label: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    tenant_id: {
+      type: DataTypes.UUID,
+      allowNull: false
     }
   }, {
     sequelize,
@@ -68,7 +68,7 @@ export class persons_fields_info extends Model<persons_fields_infoAttributes, pe
         name: "PK_Persons_fields_info",
         unique: true,
         fields: [
-          { name: "ShortName" },
+          { name: "short_name" },
         ]
       },
     ]

@@ -11,13 +11,13 @@ export class CreatePersonDto {
   DischargeDate?: Date;
   CategoryId?: number;
   GenderId?: number;
-  
+
 
 }
 
 
 /**
- * Aqui CreatedDate	Enabled CreatedUserId	 client_id	 se establecen en el backend
+ * Aqui createdAt	Enabled CreatedUserId	 client_id	 se establecen en el backend
  */
 export class UpdatePersonDto {
   Id: number;
@@ -28,7 +28,7 @@ export class UpdatePersonDto {
   DocTypeId?: number;
   DocNumber?: string;
   DateOfBirth?: Date;
-  
+
   Photo?: string;
   DischargeDate?: Date;
   CategoryId?: number;

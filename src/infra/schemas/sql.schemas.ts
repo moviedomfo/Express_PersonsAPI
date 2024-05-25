@@ -19,7 +19,7 @@ PersonsSchema.init(
       field: "DateOfBirth",
     },
     Photo: { type: DataTypes.STRING, allowNull: true },
-    
+
     DischargeDate: {
       type: DataTypes.DATE,
       allowNull: true,
@@ -29,14 +29,20 @@ PersonsSchema.init(
     GenderId: { type: DataTypes.INTEGER, allowNull: false },
     StateId: { type: DataTypes.INTEGER, allowNull: true },
 
-    Enabled: { type: DataTypes.BOOLEAN, allowNull: false ,defaultValue:true},
-    CreatedDate: {
+    enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW, //Date.now(),
-      field: "CreatedDate",
+      field: "createdAt",
     },
-    CreatedUserId: { type: DataTypes.STRING, allowNull: false },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW, //Date.now(),
+      field: "updatedAt",
+    },
+    createdUserId: { type: DataTypes.STRING, allowNull: false },
     client_id: { type: DataTypes.STRING, allowNull: false },
 
   },

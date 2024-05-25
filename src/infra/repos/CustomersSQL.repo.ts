@@ -33,7 +33,7 @@ export default class PersonsRepository implements IPersonsRepository {
         DischargeDate: req.DischargeDate,
         DateOfBirth: req.DateOfBirth,
         Photo: "",
-        CreatedDate: new Date(),
+        createdAt: new Date(),
         CategoryId: undefined,
         GenderId: req.GenderId,
         Enabled: true, // O ajusta según tu lógica
@@ -57,7 +57,7 @@ export default class PersonsRepository implements IPersonsRepository {
 
   public Insert2(req: PersonBE): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
-      //req.CreatedDate = dayjs(req.CreatedDate.toString()).toDate();
+      //req.createdAt = dayjs(req.createdAt.toString()).toDate();
 
       // const f2 = dayjs(req.GeneratedDate).toISOString();
       // const f3 = dayjs(req.GeneratedDate).format("YYYY-MM-DD HH:mm:ss.SSS");
@@ -76,7 +76,7 @@ export default class PersonsRepository implements IPersonsRepository {
         Lastname: req.Lastname,
 
         DocNumber: req.DocNumber,
-        CreatedDate: req.CreatedDate ? req.CreatedDate : new Date(),
+        createdAt: req.createdAt ? req.createdAt : new Date(),
         CloudId: "Comerce",
       };
 
@@ -163,10 +163,10 @@ export default class PersonsRepository implements IPersonsRepository {
           DateOfBirth: res.DateOfBirth || undefined,
           GenderId: res.GenderId || 0,
           Enabled: res.Enabled || false,
-          CreatedDate: res.CreatedDate || undefined,
+          createdAt: res.createdAt || undefined,
           CreatedUserId: res.CreatedUserId || "",
           Addressess: []
-    
+
         };
 
         item.Addressess = res.person_addressesses.map(address => ({
@@ -234,11 +234,11 @@ export default class PersonsRepository implements IPersonsRepository {
             Slug: p.getDataValue("Slug"),
             DocNumber: p.getDataValue("DocNumber"),
             DateOfBirth: p.getDataValue("DateOfBirth"),
-            CreatedDate: p.getDataValue("CreatedDate"),
+            createdAt: p.getDataValue("createdAt"),
             DocTypeId: p.getDataValue("DocTypeId"),
             GenderId: p.getDataValue("GenderId"),
             Enabled: p.getDataValue("Enabled"),
-            CreatedUserId: p.getDataValue("CreatedUserId"),
+            createdUserId: p.getDataValue("CreatedUserId"),
           };
           return item;
         });
@@ -265,7 +265,7 @@ export default class PersonsRepository implements IPersonsRepository {
         //   kafka_Topic: res.getDataValue("kafka_Topic"),
         //   DocNumber: res.getDataValue("DocNumber"),
         //   GeneratedDate: res.getDataValue("GeneratedDate"),
-        //   CreatedDate: res.getDataValue("CreatedDate"),
+        //   createdAt: res.getDataValue("createdAt"),
         // });
         const dummyPerson = {
           Id: 1,
@@ -277,7 +277,7 @@ export default class PersonsRepository implements IPersonsRepository {
           DateOfBirth: new Date('1990-01-01'),
           GenderId: 1,
           Enabled: true,
-          CreatedDate: new Date(),
+          createdAt: new Date(),
           CreatedUserId: 'admin',
           City: 'Dummy City',
           Phone: '1234567890',
