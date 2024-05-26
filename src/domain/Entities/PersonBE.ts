@@ -1,3 +1,4 @@
+import { Person_addressessesDTO } from "@app/DTOs/PersonDto";
 import { Entity } from "@common/CleanBases/Entity";
 
 export class PersonBE {
@@ -15,17 +16,9 @@ export class PersonBE {
   CategoryId?: number;
   GenderId: number;
   Enabled: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  created_date: Date;
+  updatd_date: Date;
   createdUserId: string;
-  client_id?: string;
+  tenant_id?: string;
   Addressess?: Person_addressessesDTO[];
-}
-
-export class Person_addressessesDTO {
-  Street: string;
-  ZipCode: string;
-  City: string;
-  Province: string;
-  Country: string;
 }

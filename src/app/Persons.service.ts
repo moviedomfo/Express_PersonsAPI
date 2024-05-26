@@ -3,7 +3,7 @@ import { ImessageDto } from "@app/DTOs/MessageDto";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
 import { or } from "sequelize";
-import { CreatePersonDto, UpdatePersonDto } from "./DTOs/PersonDto";
+import { CreatePersonDto, CreatePersonRes, GetPersonByIdRes, UpdatePersonDto } from "./DTOs/PersonDto";
 
 // @Route("PersonsService")
 export default class PersonsService implements IPersonsService {
@@ -22,12 +22,14 @@ export default class PersonsService implements IPersonsService {
    * @param person
    * @origin Api app caller
    */
-  public async Create(person: CreatePersonDto): Promise<void> {
+  public async Create(person: CreatePersonDto): Promise<CreatePersonRes> {
     try {
+
+
       // person.createdAt new Date(person.createdAt);
       // person.GeneratedDate = new Date(person.GeneratedDate);
 
-      const id = await this._personsRepo.Insert(person);
+      const res = await this._personsRepo.Insert(person);
       // const createdPerson = new PersonBE(id);
 
       // const msg: IKafkaMessageDto = {
@@ -41,6 +43,7 @@ export default class PersonsService implements IPersonsService {
       //await this._EventBusRepo.PushToQueue(msg, "customers");
       // const event: PersonWasCreatedEvent = new PersonWasCreatedEvent(createdPerson, origin);
       //await event.Emit();
+      return res;
     } catch (err) {
       throw err;
     }
@@ -61,8 +64,34 @@ export default class PersonsService implements IPersonsService {
       throw err;
     }
   }
-  public async GetById(id: number): Promise<PersonBE> {
-    return this._personsRepo.GetById(id);
+  public async GetById(id: number): Promise<GetPersonByIdRes> {
+
+    const res: GetPersonByIdRes = new GetPersonByIdRes();
+    const person = await this._personsRepo.GetById(id);
+    
+    res.Id = person.Id;
+    res.Code = person.Code;
+    res.Slug = person.Slug;
+    res.Name = person.Name;
+    res.Lastname = person.Lastname;
+    res.DocTypeId = person.DocTypeId;
+    res.DocNumber = person.DocNumber;
+    res.DateOfBirth = person.DateOfBirth;
+    res.Photo = person.Photo;
+    res.DischargeDate = person.DischargeDate;
+    res.CategoryId = person.CategoryId;
+    res.GenderId = person.GenderId;
+    res.Enabled = person.Enabled;
+    res.created_date = person.created_date;
+    res.updatd_date = person.updatd_date;
+    res.createdUserId = person.createdUserId;
+    res.tenant_id = person.tenant_id;
+    res.Addressess = person.Addressess;
+
+    const dynamicData = await this._personsRepo.SearchDinamicFields(id);
+
+    res.DynamicData = dynamicData;
+    return res;
   }
 
   public async GetAll(name?: string, page?: number, limit?: number): Promise<PersonBE[]> {

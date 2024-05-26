@@ -14,15 +14,15 @@ export interface templatesAttributes {
   institution_id?: number;
   allowEditData?: boolean;
   enabled: boolean;
-  created_at: Date;
+  created_date: Date;
   created_user_id: string;
-  updated_at?: Date;
-  tenant_id?: string;
+  updated_date?: Date;
+  tenantAt?: string;
 }
 
 export type templatesPk = "id";
 export type templatesId = templates[templatesPk];
-export type templatesOptionalAttributes = "id" | "html" | "name" | "notes" | "image" | "orientation" | "type" | "properties_json" | "institution_id" | "allowEditData" | "enabled" | "created_at" | "updated_at" | "tenant_id";
+export type templatesOptionalAttributes = "id" | "html" | "name" | "notes" | "image" | "orientation" | "type" | "properties_json" | "institution_id" | "allowEditData" | "enabled" | "updated_date" | "tenantAt";
 export type templatesCreationAttributes = Optional<templatesAttributes, templatesOptionalAttributes>;
 
 export class templates extends Model<templatesAttributes, templatesCreationAttributes> implements templatesAttributes {
@@ -37,10 +37,10 @@ export class templates extends Model<templatesAttributes, templatesCreationAttri
   institution_id?: number;
   allowEditData?: boolean;
   enabled!: boolean;
-  created_at!: Date;
+  created_date!: Date;
   created_user_id!: string;
-  updated_at?: Date;
-  tenant_id?: string;
+  updated_date?: Date;
+  tenantAt?: string;
 
   // templates hasMany activity_instance via template_id
   activity_instances!: activity_instance[];
@@ -105,11 +105,19 @@ export class templates extends Model<templatesAttributes, templatesCreationAttri
       allowNull: false,
       defaultValue: true
     },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
     created_user_id: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    tenant_id: {
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    tenantAt: {
       type: DataTypes.UUID,
       allowNull: true
     }
@@ -117,7 +125,7 @@ export class templates extends Model<templatesAttributes, templatesCreationAttri
     sequelize,
     tableName: 'templates',
     schema: 'dbo',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PK__template__3213E83FFD1135E9",

@@ -6,7 +6,7 @@ import type { persons, personsId } from './persons';
 export interface person_addressessAttributes {
   id?: number;
   person_Id?: number;
-  cityId?: number;
+  city_id?: number;
   province_Id?: number;
   country_Id?: number;
   street?: string;
@@ -15,19 +15,19 @@ export interface person_addressessAttributes {
 
 export type person_addressessPk = "id";
 export type person_addressessId = person_addressess[person_addressessPk];
-export type person_addressessOptionalAttributes = "id" | "person_Id" | "cityId" | "province_Id" | "country_Id" | "street" | "zip_code";
+export type person_addressessOptionalAttributes = "id" | "person_Id" | "city_id" | "province_Id" | "country_Id" | "street" | "zip_code";
 export type person_addressessCreationAttributes = Optional<person_addressessAttributes, person_addressessOptionalAttributes>;
 
 export class person_addressess extends Model<person_addressessAttributes, person_addressessCreationAttributes> implements person_addressessAttributes {
   id?: number;
   person_Id?: number;
-  cityId?: number;
+  city_id?: number;
   province_Id?: number;
   country_Id?: number;
   street?: string;
   zip_code?: string;
 
-  // person_addressess belongsTo locations via cityId
+  // person_addressess belongsTo locations via city_id
   city!: locations;
   getCity!: Sequelize.BelongsToGetAssociationMixin<locations>;
   setCity!: Sequelize.BelongsToSetAssociationMixin<locations, locationsId>;
@@ -63,7 +63,7 @@ export class person_addressess extends Model<person_addressessAttributes, person
         key: 'id'
       }
     },
-    cityId: {
+    city_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {

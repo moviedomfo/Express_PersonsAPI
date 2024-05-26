@@ -100,6 +100,10 @@ We have hused sequalize-auto to generate all models from dexisting database
 
    - For typescript
 
+      -v, --views              Include database views in generated models  [boolean]
+      --useDefine              Use `sequelize.define` instead of `init` for es6|esm|ts
+
+
      ```
-     yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql  -o ./src/infra/db/seq-models -l ts
+     yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql  -o ./src/infra/db/seq-models -l ts -views
      ```

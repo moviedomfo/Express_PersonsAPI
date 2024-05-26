@@ -2,43 +2,42 @@
 import { PersonsSchema } from "@infra/schemas/sql.schemas";
 import { PersonBE } from "@domain/Entities/PersonBE";
 import { v4 as uuidv4 } from "uuid";
-import { DateFunctions } from "@common/helpers/dateFunctions";
-import { ExeptionFunctions } from "@common/helpers/ExeptionFunctions";
-import { LogFunctions } from "@common/helpers/logFunctions";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
-import { CreatePersonDto, UpdatePersonDto } from "@app/DTOs/PersonDto";
+import { CreatePersonDto, CreatePersonRes, Persons_Fields_DTO, UpdatePersonDto } from "@app/DTOs/PersonDto";
 
 import sequelize from "../db/Sequelize-sql-db";
 
-import { initModels, locations, person_addressess, persons, personsAttributes, personsCreationAttributes } from "@infra/db/seq-models/init-models";
-import { Op } from "sequelize";
+import { initModels, locations, person_addressess, persons, personsAttributes, personsCreationAttributes, persons_fields_data, persons_fields_info } from "@infra/db/seq-models/init-models";
+import { Op, where } from "sequelize";
+import { AppConstants } from "@common/CommonConstants";
 
 /**Persist to mongodb Persons */
 export default class PersonsRepository implements IPersonsRepository {
 
 
-  public Insert(req: CreatePersonDto): Promise<string> {
+  public Insert(req: CreatePersonDto): Promise<CreatePersonRes> {
 
 
-    return new Promise<string>(async (resolve, reject) => {
+    return new Promise<CreatePersonRes>(async (resolve, reject) => {
 
 
       const personAtt: personsCreationAttributes = {
-        Name: req.Name,
-        Slug: uuidv4(),
-        Code: req.Code,
-        Lastname: req.Lastname,
-        DocTypeId: req.DocTypeId,
-        DocNumber: req.DocNumber,
-        DischargeDate: req.DischargeDate,
-        DateOfBirth: req.DateOfBirth,
-        Photo: "",
-        createdAt: new Date(),
-        CategoryId: undefined,
-        GenderId: req.GenderId,
-        Enabled: true, // O ajusta según tu lógica
-        CreatedUserId: '5FC54C09-9EAB-4025-821B-0B799ABE4F98', // Asegúrate de obtener el ID del usuario que está creando la entrada
-        client_id: 'D379670C-21B5-4DDD-A4EC-F5D34156B861'
+        name: req.Name,
+        slug: uuidv4(),
+        code: req.Code,
+        last_name: req.LastName,
+        doc_type_Id: req.DocTypeId,
+        doc_number: req.DocNumber,
+        discharge_date: req.DischargeDate,
+        date_of_birth: req.DateOfBirth,
+        photo: "",
+        created_date: new Date(),
+        category_id: undefined,
+        gender_id: req.GenderId,
+        enabled: true, // O ajusta según tu lógica
+        allowEditData: true,
+        created_user_id: AppConstants.APP_USER_ID,
+        tenant_id: AppConstants.APP_CLIENT_ID
       };
 
 
@@ -47,7 +46,7 @@ export default class PersonsRepository implements IPersonsRepository {
         initModels(sequelize);
         const cp = await persons.create(personAtt, {});
 
-        resolve(cp.Id.toString());
+        resolve({ Id: cp.id, Slug: cp.slug });
       } catch (err) {
         reject(err);
       }
@@ -76,7 +75,7 @@ export default class PersonsRepository implements IPersonsRepository {
         Lastname: req.Lastname,
 
         DocNumber: req.DocNumber,
-        createdAt: req.createdAt ? req.createdAt : new Date(),
+        createdAt: req.created_date ? req.created_date : new Date(),
         CloudId: "Comerce",
       };
 
@@ -122,61 +121,75 @@ export default class PersonsRepository implements IPersonsRepository {
     });
   }
 
-
+  /**
+   * 
+   * @param id 
+   * 
+   * @returns Retrive person by id and their addresses
+   */
   public GetById(id: number): Promise<PersonBE> {
     return new Promise<PersonBE>(async (resolve, reject) => {
       try {
         initModels(sequelize);
-        const res = await persons.findByPk(id, {
+
+
+        const where_include = {
           include: [
             {
               model: person_addressess,
               as: 'person_addressesses',
+
+              attributes: ['id', 'street', 'zip_code'],
               include: [
                 {
                   model: locations,
-                  as: 'City',
-                  attributes: ['Name']
+                  as: 'city',
+                  attributes: ['name'],
+
                 },
                 {
                   model: locations,
-                  as: 'Province',
-                  attributes: ['Name']
+                  as: 'province',
+                  attributes: ['name'],
                 },
                 {
                   model: locations,
-                  as: 'Country',
-                  attributes: ['Name']
+                  as: 'country',
+                  attributes: ['name'],
                 }
               ]
-            }
-          ]
-        });
+            }]
+
+
+        }
+        const res = await persons.findByPk(id, where_include);
         //res.person_addressesses;
         const item: PersonBE = {
-          Id: res.Id,
-          Slug: res.Slug,
-          Name: res.Name || "",
-          Lastname: res.Lastname || "",
-          DocTypeId: res.DocTypeId || 0,
-          DocNumber: res.DocNumber || "",
-          DateOfBirth: res.DateOfBirth || undefined,
-          GenderId: res.GenderId || 0,
-          Enabled: res.Enabled || false,
-          createdAt: res.createdAt || undefined,
-          CreatedUserId: res.CreatedUserId || "",
-          Addressess: []
-
+          Id: res.id,
+          Slug: res.slug,
+          Name: res.name || "",
+          Lastname: res.last_name || "",
+          DocTypeId: res.doc_type_Id || 0,
+          DocNumber: res.doc_number || "",
+          DateOfBirth: res.date_of_birth || undefined,
+          GenderId: res.gender_id || 0,
+          Enabled: res.enabled || false,
+          created_date: res.created_date || undefined,
+          createdUserId: res.created_user_id || "",
+          Addressess: [],
+          updatd_date: undefined
         };
+        if (res.person_addressesses) {
+          item.Addressess = res.person_addressesses.map(address => ({
+            Id: address.id,
+            Street: address.street,
+            ZipCode: address.zip_code,
+            City: address.city ? address.city.name : null,
+            Province: address.province ? address.province.name : null,
+            Country: address.country ? address.country.name : null
+          }))
 
-        item.Addressess = res.person_addressesses.map(address => ({
-          Id: address.Id,
-          Street: address.Street,
-          ZipCode: address.ZipCode,
-          City: address.City ? address.City.Name : null,
-          Province: address.Province ? address.Province.Name : null,
-          Country: address.Country ? address.Country.Name : null
-        }))
+        }
 
         // const where = {
         //   PersonId: {
@@ -192,6 +205,59 @@ export default class PersonsRepository implements IPersonsRepository {
     });
   }
 
+  public SearchDinamicFields(person_id: number): Promise<Persons_Fields_DTO[]> {
+    return new Promise<Persons_Fields_DTO[]>(async (resolve, reject) => {
+      try {
+        initModels(sequelize);
+
+
+        const where_include = {
+          where: {
+            person_id: {
+              [Op.eq]: person_id,
+            }, include: [
+              {
+                model: persons_fields_info,
+                as: 'persons_fields_info',
+
+                attributes: ['short_name', 'description'],
+                // where:{
+
+                // }
+
+              }]
+
+
+          }
+
+        }
+        // const res = await persons_fields_data.findAll({
+        //   where: {
+        //     person_id = { [Op.eq]: person_id }
+        //   },include:{
+
+        //   }
+        // });
+        const res = await persons_fields_data.findAll(where_include);
+        const result = res.map(p => {
+          const item: Persons_Fields_DTO = {
+            short_name: p.field_id,
+            data: p.data,
+            description: "",
+            type: "",
+            supported_values: ""
+          };
+          return item;
+        })
+
+
+
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 
 
 
@@ -228,17 +294,19 @@ export default class PersonsRepository implements IPersonsRepository {
 
         const personList = res.map(p => {
           const item: PersonBE = {
-            Id: p.getDataValue("Id"),
-            Name: p.getDataValue("Name"),
-            Lastname: p.getDataValue("Lastname"),
-            Slug: p.getDataValue("Slug"),
-            DocNumber: p.getDataValue("DocNumber"),
-            DateOfBirth: p.getDataValue("DateOfBirth"),
-            createdAt: p.getDataValue("createdAt"),
-            DocTypeId: p.getDataValue("DocTypeId"),
-            GenderId: p.getDataValue("GenderId"),
-            Enabled: p.getDataValue("Enabled"),
-            createdUserId: p.getDataValue("CreatedUserId"),
+            Id: p.getDataValue("id"),
+            Name: p.getDataValue("name"),
+            Lastname: p.getDataValue("last_name"),
+            Slug: p.getDataValue("slug"),
+            DocNumber: p.getDataValue("doc_number"),
+            DateOfBirth: p.getDataValue("date_of_birth"),
+            created_date: p.getDataValue("created_date"),
+            DocTypeId: p.getDataValue("doc_type_Id"),
+            GenderId: p.getDataValue("gender_id"),
+            Enabled: p.getDataValue("enabled"),
+            createdUserId: p.get("created_user_id"),
+            CategoryId: p.category_id,
+            updatd_date: p.updated_date
           };
           return item;
         });
@@ -248,46 +316,29 @@ export default class PersonsRepository implements IPersonsRepository {
         reject(err);
       }
     });
-
-
-
   }
-  public GetById_(id: number): Promise<PersonBE> {
-    return new Promise<PersonBE>(async (resolve, reject) => {
-      try {
-        const res = await PersonsSchema.findByPk(id);
-        // const person = PersonBE.Create({
-        //   Id: res.getDataValue("Id"),
-        //   Name: res.getDataValue("Name"),
-        //   Lastname: res.getDataValue("LastName"),
-        //   City: res.getDataValue("LastName"),
-        //   Phone: res.getDataValue("Phone"),
-        //   kafka_Topic: res.getDataValue("kafka_Topic"),
-        //   DocNumber: res.getDataValue("DocNumber"),
-        //   GeneratedDate: res.getDataValue("GeneratedDate"),
-        //   createdAt: res.getDataValue("createdAt"),
-        // });
-        const dummyPerson = {
-          Id: 1,
-          Slug: "",
-          Name: 'John',
-          Lastname: 'Doe',
-          DocTypeId: 1,
-          DocNumber: '123456789',
-          DateOfBirth: new Date('1990-01-01'),
-          GenderId: 1,
-          Enabled: true,
-          createdAt: new Date(),
-          CreatedUserId: 'admin',
-          City: 'Dummy City',
-          Phone: '1234567890',
-          GeneratedDate: new Date()
-        };
-        resolve(dummyPerson);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+
+  // public GetById_(id: number): Promise<PersonBE> {
+  //   return new Promise<PersonBE>(async (resolve, reject) => {
+  //     try {
+  //       const res = await PersonsSchema.findByPk(id);
+  //       // const person = PersonBE.Create({
+  //       //   Id: res.getDataValue("Id"),
+  //       //   Name: res.getDataValue("Name"),
+  //       //   Lastname: res.getDataValue("LastName"),
+  //       //   City: res.getDataValue("LastName"),
+  //       //   Phone: res.getDataValue("Phone"),
+  //       //   kafka_Topic: res.getDataValue("kafka_Topic"),
+  //       //   DocNumber: res.getDataValue("DocNumber"),
+  //       //   GeneratedDate: res.getDataValue("GeneratedDate"),
+  //       //   createdAt: res.getDataValue("createdAt"),
+  //       // });
+
+  //       resolve(dummyPerson);
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // }
 
 }

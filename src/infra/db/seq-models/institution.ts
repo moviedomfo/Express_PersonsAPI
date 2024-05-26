@@ -8,8 +8,8 @@ export interface institutionAttributes {
   name: string;
   description: string;
   photo?: string;
-  created_at?: Date;
-  update_at?: Date;
+  created_date?: Date;
+  update_date?: Date;
   created_user_id?: string;
   enabled?: boolean;
   tenant_id?: string;
@@ -17,7 +17,7 @@ export interface institutionAttributes {
 
 export type institutionPk = "id";
 export type institutionId = institution[institutionPk];
-export type institutionOptionalAttributes = "id" | "slug" | "photo" | "created_at" | "update_at" | "created_user_id" | "enabled" | "tenant_id";
+export type institutionOptionalAttributes = "id" | "slug" | "photo" | "created_date" | "update_date" | "created_user_id" | "enabled" | "tenant_id";
 export type institutionCreationAttributes = Optional<institutionAttributes, institutionOptionalAttributes>;
 
 export class institution extends Model<institutionAttributes, institutionCreationAttributes> implements institutionAttributes {
@@ -26,8 +26,8 @@ export class institution extends Model<institutionAttributes, institutionCreatio
   name!: string;
   description!: string;
   photo?: string;
-  created_at?: Date;
-  update_at?: Date;
+  created_date?: Date;
+  update_date?: Date;
   created_user_id?: string;
   enabled?: boolean;
   tenant_id?: string;
@@ -69,7 +69,12 @@ export class institution extends Model<institutionAttributes, institutionCreatio
       type: DataTypes.STRING(250),
       allowNull: true
     },
-    update_at: {
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: Sequelize.Sequelize.fn('getdate')
+    },
+    update_date: {
       type: DataTypes.DATE,
       allowNull: true
     },
@@ -90,7 +95,7 @@ export class institution extends Model<institutionAttributes, institutionCreatio
     sequelize,
     tableName: 'institution',
     schema: 'dbo',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PK__Instituc__3213E83F6A66833B",

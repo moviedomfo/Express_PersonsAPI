@@ -19,16 +19,16 @@ export interface personsAttributes {
   category_id?: number;
   gender_id: number;
   enabled: boolean;
-  created_at: Date;
+  created_date: Date;
   created_user_id: string;
-  updated_at?: Date;
+  updated_date?: Date;
   allowEditData?: boolean;
   tenant_id?: string;
 }
 
 export type personsPk = "id";
 export type personsId = persons[personsPk];
-export type personsOptionalAttributes = "id" | "code" | "photo" | "discharge_date" | "category_id" | "created_at" | "updated_at" | "allowEditData" | "tenant_id";
+export type personsOptionalAttributes = "id" | "code" | "photo" | "discharge_date" | "category_id" | "created_date" | "updated_date" | "allowEditData" | "tenant_id";
 export type personsCreationAttributes = Optional<personsAttributes, personsOptionalAttributes>;
 
 export class persons extends Model<personsAttributes, personsCreationAttributes> implements personsAttributes {
@@ -45,9 +45,9 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
   category_id?: number;
   gender_id!: number;
   enabled!: boolean;
-  created_at!: Date;
+  created_date!: Date;
   created_user_id!: string;
-  updated_at?: Date;
+  updated_date?: Date;
   allowEditData?: boolean;
   tenant_id?: string;
 
@@ -162,9 +162,18 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.fn('getdate')
+    },
     created_user_id: {
       type: DataTypes.UUID,
       allowNull: false
+    },
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     allowEditData: {
       type: DataTypes.BOOLEAN,
@@ -179,7 +188,7 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
     sequelize,
     tableName: 'persons',
     schema: 'dbo',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PK_Person",

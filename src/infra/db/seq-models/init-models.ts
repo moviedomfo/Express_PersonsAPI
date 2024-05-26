@@ -160,8 +160,8 @@ export function initModels(sequelize: Sequelize) {
   activities.hasMany(activity_instance, { as: "activity_instances", foreignKey: "activity_Id"});
   activity_instance.belongsTo(institution, { as: "institution", foreignKey: "institution_id"});
   institution.hasMany(activity_instance, { as: "activity_instances", foreignKey: "institution_id"});
-  person_addressess.belongsTo(locations, { as: "city", foreignKey: "cityId"});
-  locations.hasMany(person_addressess, { as: "person_addressesses", foreignKey: "cityId"});
+  person_addressess.belongsTo(locations, { as: "city", foreignKey: "city_id"});
+  locations.hasMany(person_addressess, { as: "person_addressesses", foreignKey: "city_id"});
   person_addressess.belongsTo(locations, { as: "province", foreignKey: "province_Id"});
   locations.hasMany(person_addressess, { as: "province_person_addressesses", foreignKey: "province_Id"});
   person_addressess.belongsTo(locations, { as: "country", foreignKey: "country_Id"});

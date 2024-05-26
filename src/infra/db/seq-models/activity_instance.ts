@@ -34,16 +34,16 @@ export interface activity_instanceAttributes {
   autogenerate?: number;
   numgrupos?: number;
   enabled: boolean;
-  created_at: Date;
+  created_date: Date;
   created_user_id: string;
-  updated_at?: Date;
+  updated_date?: Date;
   allowEditData?: boolean;
   tenant_id?: string;
 }
 
 export type activity_instancePk = "id";
 export type activity_instanceId = activity_instance[activity_instancePk];
-export type activity_instanceOptionalAttributes = "id" | "activity_Id" | "state_id" | "instance_form" | "start_date_pref" | "end_date_pref" | "start_date" | "end_date" | "quota" | "external_url" | "platform_id" | "duration" | "workload" | "institution_id" | "target_id" | "presenmtation" | "terms_and_conditions" | "course_id" | "form" | "form_text" | "form_type" | "template_id" | "autogenerate" | "numgrupos" | "created_at" | "updated_at" | "allowEditData" | "tenant_id";
+export type activity_instanceOptionalAttributes = "id" | "activity_Id" | "state_id" | "instance_form" | "start_date_pref" | "end_date_pref" | "start_date" | "end_date" | "quota" | "external_url" | "platform_id" | "duration" | "workload" | "institution_id" | "target_id" | "presenmtation" | "terms_and_conditions" | "course_id" | "form" | "form_text" | "form_type" | "template_id" | "autogenerate" | "numgrupos" | "updated_date" | "allowEditData" | "tenant_id";
 export type activity_instanceCreationAttributes = Optional<activity_instanceAttributes, activity_instanceOptionalAttributes>;
 
 export class activity_instance extends Model<activity_instanceAttributes, activity_instanceCreationAttributes> implements activity_instanceAttributes {
@@ -74,9 +74,9 @@ export class activity_instance extends Model<activity_instanceAttributes, activi
   autogenerate?: number;
   numgrupos?: number;
   enabled!: boolean;
-  created_at!: Date;
+  created_date!: Date;
   created_user_id!: string;
-  updated_at?: Date;
+  updated_date?: Date;
   allowEditData?: boolean;
   tenant_id?: string;
 
@@ -239,9 +239,17 @@ export class activity_instance extends Model<activity_instanceAttributes, activi
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
     created_user_id: {
       type: DataTypes.UUID,
       allowNull: false
+    },
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     allowEditData: {
       type: DataTypes.BOOLEAN,
@@ -255,7 +263,7 @@ export class activity_instance extends Model<activity_instanceAttributes, activi
     sequelize,
     tableName: 'activity_instance',
     schema: 'dbo',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PK__activity__3213E83F08CB8F96",

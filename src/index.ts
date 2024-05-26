@@ -16,7 +16,7 @@ const packageJson = require("./../package.json");
 
 require("dotenv").config();
 
-if (!AppConstants.PORT) {
+if (!AppConstants.APP_PORT) {
   process.exit(1);
 }
 
@@ -68,14 +68,14 @@ app.use("/api/persons/", personRouter);
 app.use(notFoundHandler);
 app.use(ExpressErrorHandler);
 
-const URL = `${process.env.APP_BASE_URL}:${AppConstants.PORT}`;
+const URL = `${process.env.APP_BASE_URL}:${AppConstants.APP_PORT}`;
 
 /**
  * Server Activation
  */
-app.listen(AppConstants.PORT, () => {
+app.listen(AppConstants.APP_PORT, () => {
   console.log(`-------------------------------------------------------------------------------`);
-  console.log(` ${AppConstants.APP_CLIENT_NAME} V${packageJson.version}  listening on port ${AppConstants.PORT}`);
+  console.log(` ${AppConstants.APP_CLIENT_NAME} V${packageJson.version}  listening on port ${AppConstants.APP_PORT}`);
   console.log(` API url ${URL}`);
   console.log(` API doccumentation ${URL}/docs/`);
   console.log(`-------------------------------------------------------------------------------`);

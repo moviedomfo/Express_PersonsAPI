@@ -8,6 +8,8 @@ export interface persons_fields_dataAttributes {
   data?: string;
 }
 
+export type persons_fields_dataPk = "person_id" | "field_id";
+export type persons_fields_dataId = persons_fields_data[persons_fields_dataPk];
 export type persons_fields_dataOptionalAttributes = "data";
 export type persons_fields_dataCreationAttributes = Optional<persons_fields_dataAttributes, persons_fields_dataOptionalAttributes>;
 
@@ -27,6 +29,7 @@ export class persons_fields_data extends Model<persons_fields_dataAttributes, pe
     person_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'persons',
         key: 'id'
@@ -34,7 +37,8 @@ export class persons_fields_data extends Model<persons_fields_dataAttributes, pe
     },
     field_id: {
       type: DataTypes.STRING(50),
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     data: {
       type: DataTypes.TEXT,
@@ -44,7 +48,17 @@ export class persons_fields_data extends Model<persons_fields_dataAttributes, pe
     sequelize,
     tableName: 'persons_fields_data',
     schema: 'dbo',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PK_persons_fields_data",
+        unique: true,
+        fields: [
+          { name: "person_id" },
+          { name: "field_id" },
+        ]
+      },
+    ]
   });
   }
 }

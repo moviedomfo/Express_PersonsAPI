@@ -4,7 +4,7 @@ import type { person_addressess, person_addressessId } from './person_addressess
 
 export interface locationsAttributes {
   id: number;
-  bame: string;
+  name: string;
   type_id: number;
   parent_id?: number;
 }
@@ -16,11 +16,11 @@ export type locationsCreationAttributes = Optional<locationsAttributes, location
 
 export class locations extends Model<locationsAttributes, locationsCreationAttributes> implements locationsAttributes {
   id!: number;
-  bame!: string;
+  name!: string;
   type_id!: number;
   parent_id?: number;
 
-  // locations hasMany person_addressess via cityId
+  // locations hasMany person_addressess via city_id
   person_addressesses!: person_addressess[];
   getPerson_addressesses!: Sequelize.HasManyGetAssociationsMixin<person_addressess>;
   setPerson_addressesses!: Sequelize.HasManySetAssociationsMixin<person_addressess, person_addressessId>;
@@ -65,7 +65,7 @@ export class locations extends Model<locationsAttributes, locationsCreationAttri
       allowNull: false,
       primaryKey: true
     },
-    bame: {
+    name: {
       type: DataTypes.STRING(50),
       allowNull: false
     },

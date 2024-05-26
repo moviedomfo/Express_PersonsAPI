@@ -14,20 +14,19 @@ export interface activitiesAttributes {
   photo: string;
   photo2: string;
   modality_Id?: number;
-  activities?: number;
   submodality_Id?: number;
   destacado?: number;
   enabled: boolean;
-  created_at: Date;
-  created_user_id: string;
-  updated_at?: Date;
   allowEditData?: boolean;
+  created_date: Date;
+  created_user_id: string;
+  updated_date?: Date;
   tenant_id: string;
 }
 
 export type activitiesPk = "id";
 export type activitiesId = activities[activitiesPk];
-export type activitiesOptionalAttributes = "id" | "type_id" | "modality_Id" | "activities" | "submodality_Id" | "destacado" | "enabled" | "created_at" | "updated_at" | "allowEditData";
+export type activitiesOptionalAttributes = "id" | "type_id" | "modality_Id" | "submodality_Id" | "destacado" | "enabled" | "allowEditData" | "created_date" | "updated_date";
 export type activitiesCreationAttributes = Optional<activitiesAttributes, activitiesOptionalAttributes>;
 
 export class activities extends Model<activitiesAttributes, activitiesCreationAttributes> implements activitiesAttributes {
@@ -41,14 +40,13 @@ export class activities extends Model<activitiesAttributes, activitiesCreationAt
   photo!: string;
   photo2!: string;
   modality_Id?: number;
-  activities?: number;
   submodality_Id?: number;
   destacado?: number;
   enabled!: boolean;
-  created_at!: Date;
-  created_user_id!: string;
-  updated_at?: Date;
   allowEditData?: boolean;
+  created_date!: Date;
+  created_user_id!: string;
+  updated_date?: Date;
   tenant_id!: string;
 
   // activities hasMany activity_instance via activity_Id
@@ -117,10 +115,6 @@ export class activities extends Model<activitiesAttributes, activitiesCreationAt
         key: 'ParamId'
       }
     },
-    activities: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     submodality_Id: {
       type: DataTypes.INTEGER,
       allowNull: true
@@ -134,14 +128,23 @@ export class activities extends Model<activitiesAttributes, activitiesCreationAt
       allowNull: false,
       defaultValue: true
     },
-    created_user_id: {
-      type: DataTypes.UUID,
-      allowNull: false
-    },
     allowEditData: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: true
+    },
+    created_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.fn('getdate')
+    },
+    created_user_id: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     tenant_id: {
       type: DataTypes.UUID,
@@ -151,7 +154,7 @@ export class activities extends Model<activitiesAttributes, activitiesCreationAt
     sequelize,
     tableName: 'activities',
     schema: 'dbo',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PK__activiti__3213E83FCE647D9F",

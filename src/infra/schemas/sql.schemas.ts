@@ -1,4 +1,5 @@
 import { Model, DataTypes } from "sequelize";
+import * as Sequelize from 'sequelize';
 import sequelize from "../db/Sequelize-sql-db";
 
 class PersonsSchema extends Model { }
@@ -6,51 +7,104 @@ class PersonsSchema extends Model { }
 // 2. Create a Schema corresponding to the document interface.
 PersonsSchema.init(
   {
-    Id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    Code: { type: DataTypes.STRING, allowNull: true },
-    Slug: { type: DataTypes.STRING, allowNull: false },
-    Name: { type: DataTypes.STRING, allowNull: false },
-    Lastname: { type: DataTypes.STRING, allowNull: false },
-    DoctypeId: { type: DataTypes.INTEGER, allowNull: false },
-    DocNumber: { type: DataTypes.STRING, allowNull: false, field: "DocNumber" },
-    DateOfBirth: {
-      type: DataTypes.DATE,
+    id: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
       allowNull: false,
-      field: "DateOfBirth",
+      primaryKey: true
     },
-    Photo: { type: DataTypes.STRING, allowNull: true },
-
-    DischargeDate: {
+    code: {
+      type: DataTypes.STRING(250),
+      allowNull: true
+    },
+    slug: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.CHAR(30),
+      allowNull: false
+    },
+    last_name: {
+      type: DataTypes.CHAR(30),
+      allowNull: false
+    },
+    doc_type_Id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    doc_number: {
+      type: DataTypes.CHAR(11),
+      allowNull: false
+    },
+    date_of_birth: {
       type: DataTypes.DATE,
+      allowNull: false
+    },
+    photo: {
+      type: DataTypes.STRING(250),
+      allowNull: true
+    },
+    discharge_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      field: "DischargeDate",
+      references: {
+        model: 'params',
+        key: 'ParamId'
+      }
     },
-    CategoryId: { type: DataTypes.INTEGER, allowNull: true },
-    GenderId: { type: DataTypes.INTEGER, allowNull: false },
-    StateId: { type: DataTypes.INTEGER, allowNull: true },
-
-    enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
-    createdAt: {
+    gender_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'params',
+        key: 'ParamId'
+      }
+    },
+    enabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    created_date: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW, //Date.now(),
-      field: "createdAt",
+      defaultValue: Sequelize.Sequelize.fn('getdate')
     },
-    updatedAt: {
+    created_user_id: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    updated_date: {
       type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW, //Date.now(),
-      field: "updatedAt",
+      allowNull: true
     },
-    createdUserId: { type: DataTypes.STRING, allowNull: false },
-    client_id: { type: DataTypes.STRING, allowNull: false },
-
-  },
-  {
+    allowEditData: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
+    },
+    tenant_id: {
+      type: DataTypes.UUID,
+      allowNull: true
+    }
+  }, {
     sequelize,
+    tableName: 'persons',
+    schema: 'dbo',
     timestamps: false,
-    underscored: true,
-    tableName: "Persons",
+    indexes: [
+      {
+        name: "PK_Person",
+        unique: true,
+        fields: [
+          { name: "id" },
+        ]
+      },
+    ]
   }
 );
 
