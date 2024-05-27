@@ -234,10 +234,10 @@ export default class PersonsRepository implements IPersonsRepository {
         const result = res.map((p) => {
           const item: Persons_Fields_Data_DTO = {
             short_name: p.field_id,
-            data: p.data,
-            description: p.field.description,
-            type: p.field.type,
-            supported_values: p.field.supported_values
+            data: p.data.trim(),
+            description: p.field.description.trim(),
+            type: p.field.type.trim(),
+            supported_values: p.field.supported_values.trim()
           };
           return item;
         });
