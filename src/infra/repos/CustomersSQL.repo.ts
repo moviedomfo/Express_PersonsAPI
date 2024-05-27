@@ -10,6 +10,8 @@ import sequelize from "../db/Sequelize-sql-db";
 import { initModels, locations, person_addressess, persons, personsAttributes, personsCreationAttributes, persons_fields_data, persons_fields_info } from "@infra/db/seq-models/init-models";
 import { Op, where } from "sequelize";
 import { AppConstants } from "@common/CommonConstants";
+import { ParamsEnum } from "@common/Enums/ParamsEnums";
+import { parseEnum } from "@common/helpers/paramsValidators";
 
 /**Persist to mongodb Persons */
 export default class PersonsRepository implements IPersonsRepository {
@@ -237,7 +239,8 @@ export default class PersonsRepository implements IPersonsRepository {
             data: p.data.trim(),
             description: p.field.description.trim(),
             type: p.field.type.trim(),
-            supported_values: p.field.supported_values.trim()
+            supported_values: p.field.supported_values.trim(),
+            type_param: ParamsEnum
           };
           return item;
         });
@@ -280,12 +283,17 @@ export default class PersonsRepository implements IPersonsRepository {
 
         const result = await Promise.all(res.map(async p => {
           const field_info = await p.getField();
+          //          if(field_info.type === 'param')
+          const param = field_info.type === 'param' ? parseEnum<ParamsEnum>(ParamsEnum, field_info.type) : null;
+
           const item: Persons_Fields_Data_DTO = {
             short_name: p.field_id,
             data: p.data,
             description: field_info.description,
             type: field_info.type,
-            supported_values: field_info.supported_values
+            supported_values: field_info.supported_values,
+            type_param: field_info.type === param,
+
           };
           return item;
         }));

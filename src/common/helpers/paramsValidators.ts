@@ -42,3 +42,17 @@ export const parse_Int = (string_as_number: string):  number | undefined => {
   }
   return undefined;
 }
+
+/**
+ *  Parse string to enum value
+ * @param enumType 
+ * @param value 
+ * @returns 
+ */
+export const parseEnum = <T>(enumType: T, value: string): T[keyof T] | undefined => {
+  const enumKey = Object.keys(enumType).find(key => key.toLowerCase() === value.toLowerCase());
+  if (enumKey !== undefined) {
+      return enumType[enumKey as keyof T];
+  }
+  return undefined;
+};

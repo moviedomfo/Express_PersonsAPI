@@ -1,3 +1,5 @@
+import { ParamsEnum } from "@common/Enums/ParamsEnums";
+
 export class CreatePersonReq {
 
   Code?: string;
@@ -80,6 +82,7 @@ export interface Persons_Fields_Data_DTO {
   short_name: string;
   description: string;
   type: string;
+  type_param:ParamsEnum;
   supported_values: string;
   label?: string;
 
