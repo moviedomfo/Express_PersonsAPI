@@ -1,4 +1,4 @@
-export class CreatePersonDto {
+export class CreatePersonReq {
 
   Code?: string;
   Slug?: string;
@@ -25,7 +25,7 @@ export class CreatePersonDto {
 /**
  * Aqui createdAt	Enabled CreatedUserId	 client_id	 se establecen en el backend
  */
-export class UpdatePersonDto {
+export class UpdatePersonReq {
   Id: number;
   Code?: number;
   Slug?: string;
@@ -40,13 +40,9 @@ export class UpdatePersonDto {
   CategoryId?: number;
   GenderId?: number;
   Enabled?: boolean;
-  constructor(init?: Partial<UpdatePersonDto>) {
-    Object.assign(this, init);
-  }
 
-  validate() {
-    // Aquí puedes agregar lógica de validación
-  }
+
+
 }
 
 export class GetPersonByIdRes {
@@ -69,7 +65,7 @@ export class GetPersonByIdRes {
   createdUserId: string;
   tenant_id?: string;
   Addressess?: Person_addressessesDTO[];
-  DynamicData :Persons_Fields_DTO[];
+  DynamicData :Persons_Fields_Data_DTO[];
 }
 export class Person_addressessesDTO {
   Street: string;
@@ -78,7 +74,7 @@ export class Person_addressessesDTO {
   Province: string;
   Country: string;
 }
-export interface Persons_Fields_DTO {
+export interface Persons_Fields_Data_DTO {
   
   data?: string;
   short_name: string;

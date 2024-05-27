@@ -152,6 +152,8 @@ export function initModels(sequelize: Sequelize) {
   const templates = _templates.initModel(sequelize);
   const tenats = _tenats.initModel(sequelize);
 
+  persons.belongsToMany(persons_fields_info, { as: 'field_id_persons_fields_infos', through: persons_fields_data, foreignKey: "person_id", otherKey: "field_id" });
+  persons_fields_info.belongsToMany(persons, { as: 'person_id_people', through: persons_fields_data, foreignKey: "field_id", otherKey: "person_id" });
   security_roles.belongsToMany(security_users, { as: 'UserId_security_users', through: securityuser_roles, foreignKey: "RoleId", otherKey: "UserId" });
   security_rules.belongsToMany(security_rules_category, { as: 'CategoryId_security_rules_categories', through: securityrules_in_category, foreignKey: "RuleId", otherKey: "CategoryId" });
   security_rules_category.belongsToMany(security_rules, { as: 'RuleId_security_rules', through: securityrules_in_category, foreignKey: "CategoryId", otherKey: "RuleId" });
@@ -180,6 +182,8 @@ export function initModels(sequelize: Sequelize) {
   persons.hasMany(person_addressess, { as: "person_addressesses", foreignKey: "person_Id"});
   persons_fields_data.belongsTo(persons, { as: "person", foreignKey: "person_id"});
   persons.hasMany(persons_fields_data, { as: "persons_fields_data", foreignKey: "person_id"});
+  persons_fields_data.belongsTo(persons_fields_info, { as: "field", foreignKey: "field_id"});
+  persons_fields_info.hasMany(persons_fields_data, { as: "persons_fields_data", foreignKey: "field_id"});
   activity_instance.belongsTo(platform, { as: "platform", foreignKey: "platform_id"});
   platform.hasMany(activity_instance, { as: "activity_instances", foreignKey: "platform_id"});
   securityuser_roles.belongsTo(security_roles, { as: "Role", foreignKey: "RoleId"});

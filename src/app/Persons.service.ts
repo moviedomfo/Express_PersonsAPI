@@ -3,7 +3,7 @@ import { ImessageDto } from "@app/DTOs/MessageDto";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
 import { or } from "sequelize";
-import { CreatePersonDto, CreatePersonRes, GetPersonByIdRes, UpdatePersonDto } from "./DTOs/PersonDto";
+import { CreatePersonReq, CreatePersonRes, GetPersonByIdRes, UpdatePersonReq } from "./DTOs/PersonDto";
 
 // @Route("PersonsService")
 export default class PersonsService implements IPersonsService {
@@ -22,7 +22,7 @@ export default class PersonsService implements IPersonsService {
    * @param person
    * @origin Api app caller
    */
-  public async Create(person: CreatePersonDto): Promise<CreatePersonRes> {
+  public async Create(person: CreatePersonReq): Promise<CreatePersonRes> {
     try {
 
 
@@ -48,6 +48,7 @@ export default class PersonsService implements IPersonsService {
       throw err;
     }
   }
+
   /**
    * New provider is registered online
    * 1) persist to database eg:sql server
@@ -55,7 +56,7 @@ export default class PersonsService implements IPersonsService {
    * @param person
    * @origin this params can be changed if you need to set other topic type for kafka
    */
-  public async Update(person: UpdatePersonDto): Promise<void> {
+  public async Update(person: UpdatePersonReq): Promise<void> {
     try {
       await this._personsRepo.Update(person);
 
@@ -66,9 +67,30 @@ export default class PersonsService implements IPersonsService {
   }
   public async GetById(id: number): Promise<GetPersonByIdRes> {
 
-    const res: GetPersonByIdRes = new GetPersonByIdRes();
-    const person = await this._personsRepo.GetById(id);
     
+    const person = await this._personsRepo.GetById(id);
+
+    const res: GetPersonByIdRes = this.map_GetPersonByIdRes(person)
+
+    const dynamicData = await this._personsRepo.SearchDinamicFields(id);
+    res.DynamicData = dynamicData;
+    
+    return res;
+  }
+
+  public async GetAll(name?: string, page?: number, limit?: number): Promise<PersonBE[]> {
+    return await this._personsRepo.GetAll(name, page, limit);
+  }
+
+
+
+  public async ClearAll(): Promise<void> {
+    return this._personsRepo.ClearAll();
+  }
+
+
+  map_GetPersonByIdRes = (person: PersonBE): GetPersonByIdRes => {
+    const res: GetPersonByIdRes = new GetPersonByIdRes();
     res.Id = person.Id;
     res.Code = person.Code;
     res.Slug = person.Slug;
@@ -87,20 +109,6 @@ export default class PersonsService implements IPersonsService {
     res.createdUserId = person.createdUserId;
     res.tenant_id = person.tenant_id;
     res.Addressess = person.Addressess;
-
-    const dynamicData = await this._personsRepo.SearchDinamicFields(id);
-
-    res.DynamicData = dynamicData;
     return res;
-  }
-
-  public async GetAll(name?: string, page?: number, limit?: number): Promise<PersonBE[]> {
-    return await this._personsRepo.GetAll(name, page, limit);
-  }
-
-
-
-  public async ClearAll(): Promise<void> {
-    return this._personsRepo.ClearAll();
   }
 }

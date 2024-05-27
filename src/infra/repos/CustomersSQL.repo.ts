@@ -3,7 +3,7 @@ import { PersonsSchema } from "@infra/schemas/sql.schemas";
 import { PersonBE } from "@domain/Entities/PersonBE";
 import { v4 as uuidv4 } from "uuid";
 import { IPersonsRepository } from "@app/interfases/IPersonsRepository";
-import { CreatePersonDto, CreatePersonRes, Persons_Fields_DTO, UpdatePersonDto } from "@app/DTOs/PersonDto";
+import { CreatePersonReq, CreatePersonRes, Persons_Fields_Data_DTO, UpdatePersonReq } from "@app/DTOs/PersonDto";
 
 import sequelize from "../db/Sequelize-sql-db";
 
@@ -15,7 +15,7 @@ import { AppConstants } from "@common/CommonConstants";
 export default class PersonsRepository implements IPersonsRepository {
 
 
-  public Insert(req: CreatePersonDto): Promise<CreatePersonRes> {
+  public Insert(req: CreatePersonReq): Promise<CreatePersonRes> {
 
 
     return new Promise<CreatePersonRes>(async (resolve, reject) => {
@@ -89,26 +89,26 @@ export default class PersonsRepository implements IPersonsRepository {
     });
   }
 
-  public Update(dto: UpdatePersonDto): Promise<void> {
+  public Update(req: UpdatePersonReq): Promise<void> {
     return new Promise<void>(async (resolve, reject) => {
 
       const personSchema = {
-        Code: dto.Code,
-        Slug: dto.Slug,
-        Name: dto.Name,
-        Lastname: dto.Lastname,
-        DocTypeId: dto.DocTypeId,
-        DocNumber: dto.DocNumber,
-        DateOfBirth: dto.DateOfBirth,
-        Photo: dto.Photo,
-        DischargeDate: dto.DischargeDate,
-        CategoryId: dto.CategoryId,
-        GenderId: dto.GenderId,
-        Enabled: dto.Enabled,
+        Code: req.Code,
+        Slug: req.Slug,
+        Name: req.Name,
+        Lastname: req.Lastname,
+        DocTypeId: req.DocTypeId,
+        DocNumber: req.DocNumber,
+        DateOfBirth: req.DateOfBirth,
+        Photo: req.Photo,
+        DischargeDate: req.DischargeDate,
+        CategoryId: req.CategoryId,
+        GenderId: req.GenderId,
+        Enabled: req.Enabled,
       };
 
       const updateOptions = {
-        where: { id: dto.Id },
+        where: { id: req.Id },
         returning: true // Esto hará que Sequelize devuelva los registros afectados
       };
       try {
@@ -123,7 +123,7 @@ export default class PersonsRepository implements IPersonsRepository {
 
   /**
    * 
-   * @param id 
+   * @param id the person_id 
    * 
    * @returns Retrive person by id and their addresses
    */
@@ -191,22 +191,20 @@ export default class PersonsRepository implements IPersonsRepository {
 
         }
 
-        // const where = {
-        //   PersonId: {
-        //     [Op.eq]: item.Id,
-        //   },
-        // };
 
-        // person_addressess.findOne();
         resolve(item);
       } catch (error) {
         reject(error);
       }
     });
   }
-
-  public SearchDinamicFields(person_id: number): Promise<Persons_Fields_DTO[]> {
-    return new Promise<Persons_Fields_DTO[]>(async (resolve, reject) => {
+  /**
+   * 
+   * @param person_id 
+   * @returns 
+   */
+  public SearchDinamicFields(person_id: number): Promise<Persons_Fields_Data_DTO[]> {
+    return new Promise<Persons_Fields_Data_DTO[]>(async (resolve, reject) => {
       try {
         initModels(sequelize);
 
@@ -215,41 +213,82 @@ export default class PersonsRepository implements IPersonsRepository {
           where: {
             person_id: {
               [Op.eq]: person_id,
-            }, include: [
-              {
-                model: persons_fields_info,
-                as: 'persons_fields_info',
+            },
+          },
+          include: [
+            {
+              model: persons_fields_info,
+              as: 'field', // Asegúrate de usar el alias correcto que corresponda con la asociación definida en el modelo
+              attributes: ['short_name', 'description', 'supported_values', 'type', 'enable'],
+              where: {
+                enable: true
+              }
 
-                attributes: ['short_name', 'description'],
-                // where:{
-
-                // }
-
-              }]
+            },
 
 
-          }
-
-        }
-        // const res = await persons_fields_data.findAll({
-        //   where: {
-        //     person_id = { [Op.eq]: person_id }
-        //   },include:{
-
-        //   }
-        // });
+          ]
+        };
         const res = await persons_fields_data.findAll(where_include);
-        const result = res.map(p => {
-          const item: Persons_Fields_DTO = {
+
+        const result = res.map((p) => {
+          const item: Persons_Fields_Data_DTO = {
             short_name: p.field_id,
             data: p.data,
-            description: "",
-            type: "",
-            supported_values: ""
+            description: p.field.description,
+            type: p.field.type,
+            supported_values: p.field.supported_values
           };
           return item;
-        })
+        });
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 
+  /**
+   * Demo .. a diferencia de SearchDinamicFields utiliza await p.getField(); par aobtener los datos 
+   * de 
+   * @param person_id persons_fields_info
+   * @returns 
+   */
+  public SearchDinamicFields2(person_id: number): Promise<Persons_Fields_Data_DTO[]> {
+    return new Promise<Persons_Fields_Data_DTO[]>(async (resolve, reject) => {
+      try {
+        initModels(sequelize);
+
+
+        const where_include = {
+          where: {
+            person_id: {
+              [Op.eq]: person_id,
+            },
+
+          },
+          // include: [
+          //   {
+          //     model: persons_fields_info,
+          //     as: 'field',
+          //     attributes: ['short_name', 'description', 'supported_values', 'type'],
+          //   }]
+        }
+
+
+        const res = await persons_fields_data.findAll(where_include);
+
+        const result = await Promise.all(res.map(async p => {
+          const field_info = await p.getField();
+          const item: Persons_Fields_Data_DTO = {
+            short_name: p.field_id,
+            data: p.data,
+            description: field_info.description,
+            type: field_info.type,
+            supported_values: field_info.supported_values
+          };
+          return item;
+        }));
 
 
         resolve(result);
@@ -258,9 +297,6 @@ export default class PersonsRepository implements IPersonsRepository {
       }
     });
   }
-
-
-
 
   public async ClearAll(): Promise<void> {
     return new Promise<void>(async (resolve, _reject) => {

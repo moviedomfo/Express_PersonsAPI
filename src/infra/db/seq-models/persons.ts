@@ -4,6 +4,7 @@ import type { contact_media, contact_mediaId } from './contact_media';
 import type { params, paramsId } from './params';
 import type { person_addressess, person_addressessId } from './person_addressess';
 import type { persons_fields_data, persons_fields_dataId } from './persons_fields_data';
+import type { persons_fields_info, persons_fields_infoId } from './persons_fields_info';
 
 export interface personsAttributes {
   id: number;
@@ -97,6 +98,18 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
   hasPersons_fields_datum!: Sequelize.HasManyHasAssociationMixin<persons_fields_data, persons_fields_dataId>;
   hasPersons_fields_data!: Sequelize.HasManyHasAssociationsMixin<persons_fields_data, persons_fields_dataId>;
   countPersons_fields_data!: Sequelize.HasManyCountAssociationsMixin;
+  // persons belongsToMany persons_fields_info via person_id and field_id
+  field_id_persons_fields_infos!: persons_fields_info[];
+  getField_id_persons_fields_infos!: Sequelize.BelongsToManyGetAssociationsMixin<persons_fields_info>;
+  setField_id_persons_fields_infos!: Sequelize.BelongsToManySetAssociationsMixin<persons_fields_info, persons_fields_infoId>;
+  addField_id_persons_fields_info!: Sequelize.BelongsToManyAddAssociationMixin<persons_fields_info, persons_fields_infoId>;
+  addField_id_persons_fields_infos!: Sequelize.BelongsToManyAddAssociationsMixin<persons_fields_info, persons_fields_infoId>;
+  createField_id_persons_fields_info!: Sequelize.BelongsToManyCreateAssociationMixin<persons_fields_info>;
+  removeField_id_persons_fields_info!: Sequelize.BelongsToManyRemoveAssociationMixin<persons_fields_info, persons_fields_infoId>;
+  removeField_id_persons_fields_infos!: Sequelize.BelongsToManyRemoveAssociationsMixin<persons_fields_info, persons_fields_infoId>;
+  hasField_id_persons_fields_info!: Sequelize.BelongsToManyHasAssociationMixin<persons_fields_info, persons_fields_infoId>;
+  hasField_id_persons_fields_infos!: Sequelize.BelongsToManyHasAssociationsMixin<persons_fields_info, persons_fields_infoId>;
+  countField_id_persons_fields_infos!: Sequelize.BelongsToManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof persons {
     return persons.init({

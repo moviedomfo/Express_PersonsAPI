@@ -1,7 +1,7 @@
 
 import { NextFunction, Request, Response } from "express";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
-import { CreatePersonDto } from "src/app/DTOs/PersonDto";
+import { CreatePersonReq } from "src/app/DTOs/PersonDto";
 import { parse_Int } from "@common/helpers/paramsValidators";
 
 export default class PersonsController {
@@ -23,7 +23,7 @@ export default class PersonsController {
 
   public Create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let person: CreatePersonDto = JSON.parse(JSON.stringify(req.body));
+      let person: CreatePersonReq = JSON.parse(JSON.stringify(req.body));
 
       await this.personsService.Create(person);
 
@@ -34,7 +34,7 @@ export default class PersonsController {
   };
   public Update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let person: CreatePersonDto = JSON.parse(JSON.stringify(req.body));
+      let person: CreatePersonReq = JSON.parse(JSON.stringify(req.body));
 
       await this.personsService.Create(person);
 
@@ -46,7 +46,7 @@ export default class PersonsController {
 
   public GetById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id:number = parse_Int(req.params.id);
+      const id: number = parse_Int(req.params.id);
       const result = await this.personsService.GetById(id);
       if (result) res.status(200).send(result);
       else res.status(204).send();

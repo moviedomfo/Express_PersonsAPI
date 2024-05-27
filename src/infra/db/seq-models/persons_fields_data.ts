@@ -1,6 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { persons, personsId } from './persons';
+import type { persons_fields_info, persons_fields_infoId } from './persons_fields_info';
 
 export interface persons_fields_dataAttributes {
   person_id: number;
@@ -23,6 +24,11 @@ export class persons_fields_data extends Model<persons_fields_dataAttributes, pe
   getPerson!: Sequelize.BelongsToGetAssociationMixin<persons>;
   setPerson!: Sequelize.BelongsToSetAssociationMixin<persons, personsId>;
   createPerson!: Sequelize.BelongsToCreateAssociationMixin<persons>;
+  // persons_fields_data belongsTo persons_fields_info via field_id
+  field!: persons_fields_info;
+  getField!: Sequelize.BelongsToGetAssociationMixin<persons_fields_info>;
+  setField!: Sequelize.BelongsToSetAssociationMixin<persons_fields_info, persons_fields_infoId>;
+  createField!: Sequelize.BelongsToCreateAssociationMixin<persons_fields_info>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof persons_fields_data {
     return persons_fields_data.init({
@@ -38,7 +44,11 @@ export class persons_fields_data extends Model<persons_fields_dataAttributes, pe
     field_id: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'persons_fields_info',
+        key: 'short_name'
+      }
     },
     data: {
       type: DataTypes.TEXT,

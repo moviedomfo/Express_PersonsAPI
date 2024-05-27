@@ -1,19 +1,19 @@
 import { PersonBE } from "@domain/Entities/PersonBE";
-import { CreatePersonDto, CreatePersonRes, UpdatePersonDto } from "@app/DTOs/PersonDto";
+import { CreatePersonReq, CreatePersonRes, UpdatePersonReq } from "@app/DTOs/PersonDto";
 
 
 export interface IPersonsService {
   /**
    * registro de nuevo cliente online
    */
-  Create: (req: CreatePersonDto) => Promise<CreatePersonRes>;
+  Create: (req: CreatePersonReq) => Promise<CreatePersonRes>;
 
   /**
    *
    * @req : updete Person 
    * @memberof IPersonsService
    */
-  Update: (req: UpdatePersonDto) => Promise<void>;
+  Update: (req: UpdatePersonReq) => Promise<void>;
 
 /**
  * 
