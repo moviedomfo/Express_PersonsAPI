@@ -56,3 +56,14 @@ export const parseEnum = <T>(enumType: T, value: string): T[keyof T] | undefined
   }
   return undefined;
 };
+
+/**
+ * Parse enum value tu respective text. similar to c# Enum.GetName
+ * @param enumType 
+ * @param value 
+ * @returns 
+ */
+export const getEnumKeyFromValue = <T>(enumType: T, value: number): string | undefined => {
+  const enumKey = Object.keys(enumType).find(key => enumType[key as keyof T] === value);
+  return enumKey;
+};

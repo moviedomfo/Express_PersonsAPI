@@ -82,7 +82,8 @@ export interface Persons_Fields_Data_DTO {
   short_name: string;
   description: string;
   type: string;
-  type_param:ParamsEnum;
+  param_type:ParamsEnum;
+  param_name:string;
   supported_values: string;
   label?: string;
 

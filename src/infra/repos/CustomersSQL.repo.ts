@@ -11,7 +11,7 @@ import { initModels, locations, person_addressess, persons, personsAttributes, p
 import { Op, where } from "sequelize";
 import { AppConstants } from "@common/CommonConstants";
 import { ParamsEnum } from "@common/Enums/ParamsEnums";
-import { parseEnum } from "@common/helpers/paramsValidators";
+import { getEnumKeyFromValue, parseEnum } from "@common/helpers/paramsValidators";
 
 /**Persist to mongodb Persons */
 export default class PersonsRepository implements IPersonsRepository {
@@ -234,13 +234,23 @@ export default class PersonsRepository implements IPersonsRepository {
         const res = await persons_fields_data.findAll(where_include);
 
         const result = res.map((p) => {
+          let enumType = undefined;
+          let enum_name = undefined;
+          if (p.field.type.trim() === 'param') {
+            enumType = parseEnum<ParamsEnum>(ParamsEnum, p.field.supported_values.trim());
+
+            enum_name = getEnumKeyFromValue(enumType, parseInt(p.data.trim()));
+          }
+
+
           const item: Persons_Fields_Data_DTO = {
             short_name: p.field_id,
             data: p.data.trim(),
             description: p.field.description.trim(),
             type: p.field.type.trim(),
             supported_values: p.field.supported_values.trim(),
-            type_param: ParamsEnum
+            param_type: enumType,
+            param_name: enum_name,
           };
           return item;
         });
@@ -283,16 +293,21 @@ export default class PersonsRepository implements IPersonsRepository {
 
         const result = await Promise.all(res.map(async p => {
           const field_info = await p.getField();
-          //          if(field_info.type === 'param')
-          const param = field_info.type === 'param' ? parseEnum<ParamsEnum>(ParamsEnum, field_info.type) : null;
+          let enumType = undefined;
+          let enum_name = undefined;
+          if (p.field.type.trim() === 'param') {
+            enumType = parseEnum<ParamsEnum>(ParamsEnum, p.field.supported_values.trim());
 
+            enum_name = getEnumKeyFromValue(enumType, parseInt(p.data.trim()));
+          }
           const item: Persons_Fields_Data_DTO = {
             short_name: p.field_id,
             data: p.data,
             description: field_info.description,
             type: field_info.type,
             supported_values: field_info.supported_values,
-            type_param: field_info.type === param,
+            param_type: enumType,
+            param_name: enum_name,
 
           };
           return item;
