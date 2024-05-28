@@ -86,7 +86,7 @@ export class DateFunctions {
   /**
    * Get ISO 8601 string fromm  date pased as string
    */
-  public static getDateFrom_yyymmyyy_toSQLDate(date: string): string {
+  public static getDateFrom_yyyymmdd_toSQLDate(date: string): string {
     const convertida = dayjs(date).toISOString();
     return convertida;
   }

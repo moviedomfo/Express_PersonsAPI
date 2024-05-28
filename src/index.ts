@@ -6,6 +6,8 @@ import morgan from "morgan";
 import {notFoundHandler} from "@common/not-found.middleware";
 import {ExpressErrorHandler} from "./common/ErrorHandle/ExpressErrorHandler";
 import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./app/config/swagger";
+
 import {logsMiddle} from "@common/log.middlewar";
 import {personRouter} from "@infra/router/persons.router";
 import {AppConstants} from "@common/CommonConstants";
@@ -52,7 +54,8 @@ app.get("/health", (_req, res) => {
 app.get("/", function (_req, res) {
   res.render("index");
 });
-
+// Swagger documentation route
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
 //   return res.send(swaggerUi.generateHTML(await import("./../../swagger.json")));
 // });

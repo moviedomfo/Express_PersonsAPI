@@ -1,5 +1,5 @@
-import {AppConstants} from "../../common/CommonConstants";
-import {Sequelize} from "sequelize";
+import { AppConstants } from "../../common/CommonConstants";
+import { Sequelize } from "sequelize";
 const user = AppConstants.BD_USER;
 
 const database = AppConstants.BD_DATABASE_NAME;
@@ -9,10 +9,13 @@ const db = new Sequelize(database, user, password, {
   dialect: "mssql",
   host: AppConstants.BD_HOST,
   port: Number(AppConstants.DB_PORT),
+  logging: false,
   dialectOptions: {
     instanceName: AppConstants.BD_INSTANCE,
     encrypt: false,
     requestTimeout: 30000,
+
+
   },
 });
 
