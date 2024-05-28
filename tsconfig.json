@@ -32,6 +32,6 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedParameters": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/app/DTOs/Persons/CreatePersonISVC.ts"],
   "exclude": ["node_modules", "**/build", "**/dist", "**/*.md", "**/rollup.config.js", "src/**/*.test.ts"]
 }

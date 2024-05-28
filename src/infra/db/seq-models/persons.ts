@@ -1,10 +1,11 @@
 import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
-import type { contact_media, contact_mediaId } from './contact_media';
+import type { contact_info, contact_infoId } from './contact_info';
 import type { params, paramsId } from './params';
 import type { person_addressess, person_addressessId } from './person_addressess';
 import type { persons_fields_data, persons_fields_dataId } from './persons_fields_data';
 import type { persons_fields_info, persons_fields_infoId } from './persons_fields_info';
+import type { tenats, tenatsId } from './tenats';
 
 export interface personsAttributes {
   id: number;
@@ -62,18 +63,18 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
   getCategory!: Sequelize.BelongsToGetAssociationMixin<params>;
   setCategory!: Sequelize.BelongsToSetAssociationMixin<params, paramsId>;
   createCategory!: Sequelize.BelongsToCreateAssociationMixin<params>;
-  // persons hasMany contact_media via person_id
-  contact_media!: contact_media[];
-  getContact_media!: Sequelize.HasManyGetAssociationsMixin<contact_media>;
-  setContact_media!: Sequelize.HasManySetAssociationsMixin<contact_media, contact_mediaId>;
-  addContact_medium!: Sequelize.HasManyAddAssociationMixin<contact_media, contact_mediaId>;
-  addContact_media!: Sequelize.HasManyAddAssociationsMixin<contact_media, contact_mediaId>;
-  createContact_medium!: Sequelize.HasManyCreateAssociationMixin<contact_media>;
-  removeContact_medium!: Sequelize.HasManyRemoveAssociationMixin<contact_media, contact_mediaId>;
-  removeContact_media!: Sequelize.HasManyRemoveAssociationsMixin<contact_media, contact_mediaId>;
-  hasContact_medium!: Sequelize.HasManyHasAssociationMixin<contact_media, contact_mediaId>;
-  hasContact_media!: Sequelize.HasManyHasAssociationsMixin<contact_media, contact_mediaId>;
-  countContact_media!: Sequelize.HasManyCountAssociationsMixin;
+  // persons hasMany contact_info via person_id
+  contact_infos!: contact_info[];
+  getContact_infos!: Sequelize.HasManyGetAssociationsMixin<contact_info>;
+  setContact_infos!: Sequelize.HasManySetAssociationsMixin<contact_info, contact_infoId>;
+  addContact_info!: Sequelize.HasManyAddAssociationMixin<contact_info, contact_infoId>;
+  addContact_infos!: Sequelize.HasManyAddAssociationsMixin<contact_info, contact_infoId>;
+  createContact_info!: Sequelize.HasManyCreateAssociationMixin<contact_info>;
+  removeContact_info!: Sequelize.HasManyRemoveAssociationMixin<contact_info, contact_infoId>;
+  removeContact_infos!: Sequelize.HasManyRemoveAssociationsMixin<contact_info, contact_infoId>;
+  hasContact_info!: Sequelize.HasManyHasAssociationMixin<contact_info, contact_infoId>;
+  hasContact_infos!: Sequelize.HasManyHasAssociationsMixin<contact_info, contact_infoId>;
+  countContact_infos!: Sequelize.HasManyCountAssociationsMixin;
   // persons hasMany person_addressess via person_Id
   person_addressesses!: person_addressess[];
   getPerson_addressesses!: Sequelize.HasManyGetAssociationsMixin<person_addressess>;
@@ -110,6 +111,11 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
   hasField_id_persons_fields_info!: Sequelize.BelongsToManyHasAssociationMixin<persons_fields_info, persons_fields_infoId>;
   hasField_id_persons_fields_infos!: Sequelize.BelongsToManyHasAssociationsMixin<persons_fields_info, persons_fields_infoId>;
   countField_id_persons_fields_infos!: Sequelize.BelongsToManyCountAssociationsMixin;
+  // persons belongsTo tenats via tenant_id
+  tenant!: tenats;
+  getTenant!: Sequelize.BelongsToGetAssociationMixin<tenats>;
+  setTenant!: Sequelize.BelongsToSetAssociationMixin<tenats, tenatsId>;
+  createTenant!: Sequelize.BelongsToCreateAssociationMixin<tenats>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof persons {
     return persons.init({
@@ -195,7 +201,11 @@ export class persons extends Model<personsAttributes, personsCreationAttributes>
     },
     tenant_id: {
       type: DataTypes.UUID,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'tenats',
+        key: 'id'
+      }
     }
   }, {
     sequelize,

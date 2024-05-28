@@ -2,6 +2,7 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { persons, personsId } from './persons';
 import type { persons_fields_data, persons_fields_dataId } from './persons_fields_data';
+import type { tenats, tenatsId } from './tenats';
 
 export interface persons_fields_infoAttributes {
   short_name: string;
@@ -51,6 +52,11 @@ export class persons_fields_info extends Model<persons_fields_infoAttributes, pe
   hasPersons_fields_datum!: Sequelize.HasManyHasAssociationMixin<persons_fields_data, persons_fields_dataId>;
   hasPersons_fields_data!: Sequelize.HasManyHasAssociationsMixin<persons_fields_data, persons_fields_dataId>;
   countPersons_fields_data!: Sequelize.HasManyCountAssociationsMixin;
+  // persons_fields_info belongsTo tenats via tenant_id
+  tenant!: tenats;
+  getTenant!: Sequelize.BelongsToGetAssociationMixin<tenats>;
+  setTenant!: Sequelize.BelongsToSetAssociationMixin<tenats, tenatsId>;
+  createTenant!: Sequelize.BelongsToCreateAssociationMixin<tenats>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof persons_fields_info {
     return persons_fields_info.init({
@@ -82,7 +88,11 @@ export class persons_fields_info extends Model<persons_fields_infoAttributes, pe
     },
     tenant_id: {
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'tenats',
+        key: 'id'
+      }
     }
   }, {
     sequelize,

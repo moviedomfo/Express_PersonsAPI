@@ -2,6 +2,7 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { activities, activitiesId } from './activities';
 import type { activity_instance, activity_instanceId } from './activity_instance';
+import type { contact_info, contact_infoId } from './contact_info';
 import type { persons, personsId } from './persons';
 
 export interface paramsAttributes {
@@ -48,6 +49,18 @@ export class params extends Model<paramsAttributes, paramsCreationAttributes> im
   hasActivity_instance!: Sequelize.HasManyHasAssociationMixin<activity_instance, activity_instanceId>;
   hasActivity_instances!: Sequelize.HasManyHasAssociationsMixin<activity_instance, activity_instanceId>;
   countActivity_instances!: Sequelize.HasManyCountAssociationsMixin;
+  // params hasMany contact_info via type_id
+  contact_infos!: contact_info[];
+  getContact_infos!: Sequelize.HasManyGetAssociationsMixin<contact_info>;
+  setContact_infos!: Sequelize.HasManySetAssociationsMixin<contact_info, contact_infoId>;
+  addContact_info!: Sequelize.HasManyAddAssociationMixin<contact_info, contact_infoId>;
+  addContact_infos!: Sequelize.HasManyAddAssociationsMixin<contact_info, contact_infoId>;
+  createContact_info!: Sequelize.HasManyCreateAssociationMixin<contact_info>;
+  removeContact_info!: Sequelize.HasManyRemoveAssociationMixin<contact_info, contact_infoId>;
+  removeContact_infos!: Sequelize.HasManyRemoveAssociationsMixin<contact_info, contact_infoId>;
+  hasContact_info!: Sequelize.HasManyHasAssociationMixin<contact_info, contact_infoId>;
+  hasContact_infos!: Sequelize.HasManyHasAssociationsMixin<contact_info, contact_infoId>;
+  countContact_infos!: Sequelize.HasManyCountAssociationsMixin;
   // params hasMany persons via gender_id
   people!: persons[];
   getPeople!: Sequelize.HasManyGetAssociationsMixin<persons>;

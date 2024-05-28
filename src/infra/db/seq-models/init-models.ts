@@ -3,8 +3,8 @@ import { activities as _activities } from "./activities";
 import type { activitiesAttributes, activitiesCreationAttributes } from "./activities";
 import { activity_instance as _activity_instance } from "./activity_instance";
 import type { activity_instanceAttributes, activity_instanceCreationAttributes } from "./activity_instance";
-import { contact_media as _contact_media } from "./contact_media";
-import type { contact_mediaAttributes, contact_mediaCreationAttributes } from "./contact_media";
+import { contact_info as _contact_info } from "./contact_info";
+import type { contact_infoAttributes, contact_infoCreationAttributes } from "./contact_info";
 import { institution as _institution } from "./institution";
 import type { institutionAttributes, institutionCreationAttributes } from "./institution";
 import { locations as _locations } from "./locations";
@@ -23,24 +23,26 @@ import { persons_fields_info as _persons_fields_info } from "./persons_fields_in
 import type { persons_fields_infoAttributes, persons_fields_infoCreationAttributes } from "./persons_fields_info";
 import { platform as _platform } from "./platform";
 import type { platformAttributes, platformCreationAttributes } from "./platform";
+import { programs as _programs } from "./programs";
+import type { programsAttributes, programsCreationAttributes } from "./programs";
+import { programs_activities as _programs_activities } from "./programs_activities";
+import type { programs_activitiesAttributes, programs_activitiesCreationAttributes } from "./programs_activities";
 import { security_clients as _security_clients } from "./security_clients";
 import type { security_clientsAttributes, security_clientsCreationAttributes } from "./security_clients";
+import { security_permissions as _security_permissions } from "./security_permissions";
+import type { security_permissionsAttributes, security_permissionsCreationAttributes } from "./security_permissions";
+import { security_permissions_groups as _security_permissions_groups } from "./security_permissions_groups";
+import type { security_permissions_groupsAttributes, security_permissions_groupsCreationAttributes } from "./security_permissions_groups";
 import { security_roles as _security_roles } from "./security_roles";
 import type { security_rolesAttributes, security_rolesCreationAttributes } from "./security_roles";
-import { security_roles_in_rules as _security_roles_in_rules } from "./security_roles_in_rules";
-import type { security_roles_in_rulesAttributes, security_roles_in_rulesCreationAttributes } from "./security_roles_in_rules";
-import { security_rules as _security_rules } from "./security_rules";
-import type { security_rulesAttributes, security_rulesCreationAttributes } from "./security_rules";
-import { security_rules_category as _security_rules_category } from "./security_rules_category";
-import type { security_rules_categoryAttributes, security_rules_categoryCreationAttributes } from "./security_rules_category";
+import { security_roles_permissions as _security_roles_permissions } from "./security_roles_permissions";
+import type { security_roles_permissionsAttributes, security_roles_permissionsCreationAttributes } from "./security_roles_permissions";
+import { security_user_roles as _security_user_roles } from "./security_user_roles";
+import type { security_user_rolesAttributes, security_user_rolesCreationAttributes } from "./security_user_roles";
 import { security_users as _security_users } from "./security_users";
 import type { security_usersAttributes, security_usersCreationAttributes } from "./security_users";
-import { securityrules_in_category as _securityrules_in_category } from "./securityrules_in_category";
-import type { securityrules_in_categoryAttributes, securityrules_in_categoryCreationAttributes } from "./securityrules_in_category";
 import { securityt_user_logins as _securityt_user_logins } from "./securityt_user_logins";
 import type { securityt_user_loginsAttributes, securityt_user_loginsCreationAttributes } from "./securityt_user_logins";
-import { securityuser_roles as _securityuser_roles } from "./securityuser_roles";
-import type { securityuser_rolesAttributes, securityuser_rolesCreationAttributes } from "./securityuser_roles";
 import { students as _students } from "./students";
 import type { studentsAttributes, studentsCreationAttributes } from "./students";
 import { templates as _templates } from "./templates";
@@ -51,7 +53,7 @@ import type { tenatsAttributes, tenatsCreationAttributes } from "./tenats";
 export {
   _activities as activities,
   _activity_instance as activity_instance,
-  _contact_media as contact_media,
+  _contact_info as contact_info,
   _institution as institution,
   _locations as locations,
   _paramas_tenant as paramas_tenant,
@@ -61,15 +63,16 @@ export {
   _persons_fields_data as persons_fields_data,
   _persons_fields_info as persons_fields_info,
   _platform as platform,
+  _programs as programs,
+  _programs_activities as programs_activities,
   _security_clients as security_clients,
+  _security_permissions as security_permissions,
+  _security_permissions_groups as security_permissions_groups,
   _security_roles as security_roles,
-  _security_roles_in_rules as security_roles_in_rules,
-  _security_rules as security_rules,
-  _security_rules_category as security_rules_category,
+  _security_roles_permissions as security_roles_permissions,
+  _security_user_roles as security_user_roles,
   _security_users as security_users,
-  _securityrules_in_category as securityrules_in_category,
   _securityt_user_logins as securityt_user_logins,
-  _securityuser_roles as securityuser_roles,
   _students as students,
   _templates as templates,
   _tenats as tenats,
@@ -80,8 +83,8 @@ export type {
   activitiesCreationAttributes,
   activity_instanceAttributes,
   activity_instanceCreationAttributes,
-  contact_mediaAttributes,
-  contact_mediaCreationAttributes,
+  contact_infoAttributes,
+  contact_infoCreationAttributes,
   institutionAttributes,
   institutionCreationAttributes,
   locationsAttributes,
@@ -100,24 +103,26 @@ export type {
   persons_fields_infoCreationAttributes,
   platformAttributes,
   platformCreationAttributes,
+  programsAttributes,
+  programsCreationAttributes,
+  programs_activitiesAttributes,
+  programs_activitiesCreationAttributes,
   security_clientsAttributes,
   security_clientsCreationAttributes,
+  security_permissionsAttributes,
+  security_permissionsCreationAttributes,
+  security_permissions_groupsAttributes,
+  security_permissions_groupsCreationAttributes,
   security_rolesAttributes,
   security_rolesCreationAttributes,
-  security_roles_in_rulesAttributes,
-  security_roles_in_rulesCreationAttributes,
-  security_rulesAttributes,
-  security_rulesCreationAttributes,
-  security_rules_categoryAttributes,
-  security_rules_categoryCreationAttributes,
+  security_roles_permissionsAttributes,
+  security_roles_permissionsCreationAttributes,
+  security_user_rolesAttributes,
+  security_user_rolesCreationAttributes,
   security_usersAttributes,
   security_usersCreationAttributes,
-  securityrules_in_categoryAttributes,
-  securityrules_in_categoryCreationAttributes,
   securityt_user_loginsAttributes,
   securityt_user_loginsCreationAttributes,
-  securityuser_rolesAttributes,
-  securityuser_rolesCreationAttributes,
   studentsAttributes,
   studentsCreationAttributes,
   templatesAttributes,
@@ -129,7 +134,7 @@ export type {
 export function initModels(sequelize: Sequelize) {
   const activities = _activities.initModel(sequelize);
   const activity_instance = _activity_instance.initModel(sequelize);
-  const contact_media = _contact_media.initModel(sequelize);
+  const contact_info = _contact_info.initModel(sequelize);
   const institution = _institution.initModel(sequelize);
   const locations = _locations.initModel(sequelize);
   const paramas_tenant = _paramas_tenant.initModel(sequelize);
@@ -139,27 +144,30 @@ export function initModels(sequelize: Sequelize) {
   const persons_fields_data = _persons_fields_data.initModel(sequelize);
   const persons_fields_info = _persons_fields_info.initModel(sequelize);
   const platform = _platform.initModel(sequelize);
+  const programs = _programs.initModel(sequelize);
+  const programs_activities = _programs_activities.initModel(sequelize);
   const security_clients = _security_clients.initModel(sequelize);
+  const security_permissions = _security_permissions.initModel(sequelize);
+  const security_permissions_groups = _security_permissions_groups.initModel(sequelize);
   const security_roles = _security_roles.initModel(sequelize);
-  const security_roles_in_rules = _security_roles_in_rules.initModel(sequelize);
-  const security_rules = _security_rules.initModel(sequelize);
-  const security_rules_category = _security_rules_category.initModel(sequelize);
+  const security_roles_permissions = _security_roles_permissions.initModel(sequelize);
+  const security_user_roles = _security_user_roles.initModel(sequelize);
   const security_users = _security_users.initModel(sequelize);
-  const securityrules_in_category = _securityrules_in_category.initModel(sequelize);
   const securityt_user_logins = _securityt_user_logins.initModel(sequelize);
-  const securityuser_roles = _securityuser_roles.initModel(sequelize);
   const students = _students.initModel(sequelize);
   const templates = _templates.initModel(sequelize);
   const tenats = _tenats.initModel(sequelize);
 
   persons.belongsToMany(persons_fields_info, { as: 'field_id_persons_fields_infos', through: persons_fields_data, foreignKey: "person_id", otherKey: "field_id" });
   persons_fields_info.belongsToMany(persons, { as: 'person_id_people', through: persons_fields_data, foreignKey: "field_id", otherKey: "person_id" });
-  security_roles.belongsToMany(security_users, { as: 'UserId_security_users', through: securityuser_roles, foreignKey: "RoleId", otherKey: "UserId" });
-  security_rules.belongsToMany(security_rules_category, { as: 'CategoryId_security_rules_categories', through: securityrules_in_category, foreignKey: "RuleId", otherKey: "CategoryId" });
-  security_rules_category.belongsToMany(security_rules, { as: 'RuleId_security_rules', through: securityrules_in_category, foreignKey: "CategoryId", otherKey: "RuleId" });
-  security_users.belongsToMany(security_roles, { as: 'RoleId_security_roles', through: securityuser_roles, foreignKey: "UserId", otherKey: "RoleId" });
+  security_permissions.belongsToMany(security_roles, { as: 'rol_Id_security_roles', through: security_roles_permissions, foreignKey: "permission_id", otherKey: "rol_Id" });
+  security_roles.belongsToMany(security_permissions, { as: 'permission_id_security_permissions', through: security_roles_permissions, foreignKey: "rol_Id", otherKey: "permission_id" });
+  security_roles.belongsToMany(security_users, { as: 'user_id_security_users', through: security_user_roles, foreignKey: "role_id", otherKey: "user_id" });
+  security_users.belongsToMany(security_roles, { as: 'role_id_security_roles', through: security_user_roles, foreignKey: "user_id", otherKey: "role_id" });
   activity_instance.belongsTo(activities, { as: "activity", foreignKey: "activity_Id"});
   activities.hasMany(activity_instance, { as: "activity_instances", foreignKey: "activity_Id"});
+  programs_activities.belongsTo(activities, { as: "activity", foreignKey: "activity_id"});
+  activities.hasMany(programs_activities, { as: "programs_activities", foreignKey: "activity_id"});
   activity_instance.belongsTo(institution, { as: "institution", foreignKey: "institution_id"});
   institution.hasMany(activity_instance, { as: "activity_instances", foreignKey: "institution_id"});
   person_addressess.belongsTo(locations, { as: "city", foreignKey: "city_id"});
@@ -172,12 +180,14 @@ export function initModels(sequelize: Sequelize) {
   params.hasMany(activities, { as: "activities", foreignKey: "modality_Id"});
   activity_instance.belongsTo(params, { as: "state", foreignKey: "state_id"});
   params.hasMany(activity_instance, { as: "activity_instances", foreignKey: "state_id"});
+  contact_info.belongsTo(params, { as: "type", foreignKey: "type_id"});
+  params.hasMany(contact_info, { as: "contact_infos", foreignKey: "type_id"});
   persons.belongsTo(params, { as: "gender", foreignKey: "gender_id"});
   params.hasMany(persons, { as: "people", foreignKey: "gender_id"});
   persons.belongsTo(params, { as: "category", foreignKey: "category_id"});
   params.hasMany(persons, { as: "category_people", foreignKey: "category_id"});
-  contact_media.belongsTo(persons, { as: "person", foreignKey: "person_id"});
-  persons.hasMany(contact_media, { as: "contact_media", foreignKey: "person_id"});
+  contact_info.belongsTo(persons, { as: "person", foreignKey: "person_id"});
+  persons.hasMany(contact_info, { as: "contact_infos", foreignKey: "person_id"});
   person_addressess.belongsTo(persons, { as: "person", foreignKey: "person_Id"});
   persons.hasMany(person_addressess, { as: "person_addressesses", foreignKey: "person_Id"});
   persons_fields_data.belongsTo(persons, { as: "person", foreignKey: "person_id"});
@@ -186,27 +196,31 @@ export function initModels(sequelize: Sequelize) {
   persons_fields_info.hasMany(persons_fields_data, { as: "persons_fields_data", foreignKey: "field_id"});
   activity_instance.belongsTo(platform, { as: "platform", foreignKey: "platform_id"});
   platform.hasMany(activity_instance, { as: "activity_instances", foreignKey: "platform_id"});
-  securityuser_roles.belongsTo(security_roles, { as: "Role", foreignKey: "RoleId"});
-  security_roles.hasMany(securityuser_roles, { as: "securityuser_roles", foreignKey: "RoleId"});
-  security_roles_in_rules.belongsTo(security_rules, { as: "Rule", foreignKey: "RuleId"});
-  security_rules.hasMany(security_roles_in_rules, { as: "security_roles_in_rules", foreignKey: "RuleId"});
-  securityrules_in_category.belongsTo(security_rules, { as: "Rule", foreignKey: "RuleId"});
-  security_rules.hasMany(securityrules_in_category, { as: "securityrules_in_categories", foreignKey: "RuleId"});
-  securityrules_in_category.belongsTo(security_rules_category, { as: "Category", foreignKey: "CategoryId"});
-  security_rules_category.hasMany(securityrules_in_category, { as: "securityrules_in_categories", foreignKey: "CategoryId"});
+  programs_activities.belongsTo(programs, { as: "program", foreignKey: "program_id"});
+  programs.hasMany(programs_activities, { as: "programs_activities", foreignKey: "program_id"});
+  security_roles_permissions.belongsTo(security_permissions, { as: "permission", foreignKey: "permission_id"});
+  security_permissions.hasMany(security_roles_permissions, { as: "security_roles_permissions", foreignKey: "permission_id"});
+  security_permissions.belongsTo(security_permissions_groups, { as: "group", foreignKey: "group_id"});
+  security_permissions_groups.hasMany(security_permissions, { as: "security_permissions", foreignKey: "group_id"});
+  security_roles_permissions.belongsTo(security_roles, { as: "rol", foreignKey: "rol_Id"});
+  security_roles.hasMany(security_roles_permissions, { as: "security_roles_permissions", foreignKey: "rol_Id"});
+  security_user_roles.belongsTo(security_roles, { as: "role", foreignKey: "role_id"});
+  security_roles.hasMany(security_user_roles, { as: "security_user_roles", foreignKey: "role_id"});
+  security_user_roles.belongsTo(security_users, { as: "user", foreignKey: "user_id"});
+  security_users.hasMany(security_user_roles, { as: "security_user_roles", foreignKey: "user_id"});
   securityt_user_logins.belongsTo(security_users, { as: "User", foreignKey: "UserId"});
   security_users.hasMany(securityt_user_logins, { as: "securityt_user_logins", foreignKey: "UserId"});
-  securityuser_roles.belongsTo(security_users, { as: "User", foreignKey: "UserId"});
-  security_users.hasMany(securityuser_roles, { as: "securityuser_roles", foreignKey: "UserId"});
   activity_instance.belongsTo(templates, { as: "template", foreignKey: "template_id"});
   templates.hasMany(activity_instance, { as: "activity_instances", foreignKey: "template_id"});
-  security_users.belongsTo(tenats, { as: "Tenant", foreignKey: "TenantId"});
-  tenats.hasMany(security_users, { as: "security_users", foreignKey: "TenantId"});
+  persons.belongsTo(tenats, { as: "tenant", foreignKey: "tenant_id"});
+  tenats.hasMany(persons, { as: "people", foreignKey: "tenant_id"});
+  persons_fields_info.belongsTo(tenats, { as: "tenant", foreignKey: "tenant_id"});
+  tenats.hasMany(persons_fields_info, { as: "persons_fields_infos", foreignKey: "tenant_id"});
 
   return {
     activities: activities,
     activity_instance: activity_instance,
-    contact_media: contact_media,
+    contact_info: contact_info,
     institution: institution,
     locations: locations,
     paramas_tenant: paramas_tenant,
@@ -216,15 +230,16 @@ export function initModels(sequelize: Sequelize) {
     persons_fields_data: persons_fields_data,
     persons_fields_info: persons_fields_info,
     platform: platform,
+    programs: programs,
+    programs_activities: programs_activities,
     security_clients: security_clients,
+    security_permissions: security_permissions,
+    security_permissions_groups: security_permissions_groups,
     security_roles: security_roles,
-    security_roles_in_rules: security_roles_in_rules,
-    security_rules: security_rules,
-    security_rules_category: security_rules_category,
+    security_roles_permissions: security_roles_permissions,
+    security_user_roles: security_user_roles,
     security_users: security_users,
-    securityrules_in_category: securityrules_in_category,
     securityt_user_logins: securityt_user_logins,
-    securityuser_roles: securityuser_roles,
     students: students,
     templates: templates,
     tenats: tenats,

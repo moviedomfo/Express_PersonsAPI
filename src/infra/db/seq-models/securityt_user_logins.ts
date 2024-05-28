@@ -40,7 +40,7 @@ export class securityt_user_logins extends Model<securityt_user_loginsAttributes
       allowNull: false,
       references: {
         model: 'security_users',
-        key: 'Id'
+        key: 'id'
       }
     }
   }, {

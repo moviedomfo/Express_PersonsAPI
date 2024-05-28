@@ -2,6 +2,7 @@ import * as Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { activity_instance, activity_instanceId } from './activity_instance';
 import type { params, paramsId } from './params';
+import type { programs_activities, programs_activitiesId } from './programs_activities';
 
 export interface activitiesAttributes {
   id: number;
@@ -61,6 +62,18 @@ export class activities extends Model<activitiesAttributes, activitiesCreationAt
   hasActivity_instance!: Sequelize.HasManyHasAssociationMixin<activity_instance, activity_instanceId>;
   hasActivity_instances!: Sequelize.HasManyHasAssociationsMixin<activity_instance, activity_instanceId>;
   countActivity_instances!: Sequelize.HasManyCountAssociationsMixin;
+  // activities hasMany programs_activities via activity_id
+  programs_activities!: programs_activities[];
+  getPrograms_activities!: Sequelize.HasManyGetAssociationsMixin<programs_activities>;
+  setPrograms_activities!: Sequelize.HasManySetAssociationsMixin<programs_activities, programs_activitiesId>;
+  addPrograms_activity!: Sequelize.HasManyAddAssociationMixin<programs_activities, programs_activitiesId>;
+  addPrograms_activities!: Sequelize.HasManyAddAssociationsMixin<programs_activities, programs_activitiesId>;
+  createPrograms_activity!: Sequelize.HasManyCreateAssociationMixin<programs_activities>;
+  removePrograms_activity!: Sequelize.HasManyRemoveAssociationMixin<programs_activities, programs_activitiesId>;
+  removePrograms_activities!: Sequelize.HasManyRemoveAssociationsMixin<programs_activities, programs_activitiesId>;
+  hasPrograms_activity!: Sequelize.HasManyHasAssociationMixin<programs_activities, programs_activitiesId>;
+  hasPrograms_activities!: Sequelize.HasManyHasAssociationsMixin<programs_activities, programs_activitiesId>;
+  countPrograms_activities!: Sequelize.HasManyCountAssociationsMixin;
   // activities belongsTo params via modality_Id
   modality!: params;
   getModality!: Sequelize.BelongsToGetAssociationMixin<params>;

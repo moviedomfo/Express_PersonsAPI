@@ -1,8 +1,9 @@
 
 import { NextFunction, Request, Response } from "express";
 import { IPersonsService } from "@domain/interfases/IPersonsService";
-import { CreatePersonReq } from "src/app/DTOs/PersonDto";
+import { UpdatePersonReq } from "@app/DTOs/Persons/UpdatePersonISVC";
 import { parse_Int } from "@common/helpers/paramsValidators";
+import { CreatePersonReq } from "@app/DTOs/Persons/CreatePersonISVC";
 
 export default class PersonsController {
   constructor(private readonly personsService: IPersonsService) { }
@@ -34,9 +35,9 @@ export default class PersonsController {
   };
   public Update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let person: CreatePersonReq = JSON.parse(JSON.stringify(req.body));
+      let person: UpdatePersonReq = JSON.parse(JSON.stringify(req.body));
 
-      await this.personsService.Create(person);
+      await this.personsService.Update(person);
 
       res.status(200).send();
     } catch (e) {

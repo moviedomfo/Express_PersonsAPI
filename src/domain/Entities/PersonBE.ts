@@ -1,24 +1,28 @@
-import { Person_addressessesDTO } from "@app/DTOs/PersonDto";
 import { Entity } from "@common/CleanBases/Entity";
+import { PersonAddresseBE } from "./Person_AddressessBE";
+import { ContactInfoBE } from "./ContactInfoBE";
 
 export class PersonBE {
 
-  Id: number;
-  Code?: number;
-  Slug: string;
-  Name: string;
-  Lastname: string;
-  DocTypeId: number;
-  DocNumber: string;
-  DateOfBirth: Date;
-  Photo?: string;
-  DischargeDate?: Date;
-  CategoryId?: number;
-  GenderId: number;
-  Enabled: boolean;
+  id: number;
+  code?: string;
+  slug: string;
+  name: string;
+  last_name: string;
+  doc_type_Id: number;
+  doc_number: string;
+  date_of_birth: Date;
+  photo?: string;
+  discharge_date?: Date;
+  category_id?: number;
+  gender_id: number;
+  enabled: boolean;
   created_date: Date;
-  updatd_date: Date;
-  createdUserId: string;
+  created_user_id: string;
+  updated_date?: Date;
+  allowEditData?: boolean;
   tenant_id?: string;
-  Addressess?: Person_addressessesDTO[];
+  // addressess?: PersonAddresseBE[];
+  // contactInfoList?:ContactMediaBE[];
+
 }

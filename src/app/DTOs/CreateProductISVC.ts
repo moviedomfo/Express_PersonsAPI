@@ -1,4 +1,4 @@
-export class CreateProductDto {
+export class CreateProductReq {
   
   public Name: string;
 

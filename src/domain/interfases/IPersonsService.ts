@@ -1,5 +1,7 @@
 import { PersonBE } from "@domain/Entities/PersonBE";
-import { CreatePersonReq, CreatePersonRes, UpdatePersonReq } from "@app/DTOs/PersonDto";
+import { UpdatePersonReq } from "@app/DTOs/Persons/UpdatePersonISVC";
+import { GetPersonByIdRes } from "@app/DTOs/Persons/GetPersonByIdISVC";
+import { CreatePersonReq, CreatePersonRes } from "@app/DTOs/Persons/CreatePersonISVC";
 
 
 export interface IPersonsService {
@@ -15,15 +17,15 @@ export interface IPersonsService {
    */
   Update: (req: UpdatePersonReq) => Promise<void>;
 
-/**
- * 
- * @param id Customer Id
- * @returns 
- */
-  GetById: (id: number) => Promise<PersonBE>;
-  
+  /**
+   * 
+   * @param id Customer Id
+   * @returns 
+   */
+  GetById: (id: number) => Promise<GetPersonByIdRes>;
 
-  GetAll: (name?: string, page?: number, limit?: number ) => Promise<PersonBE[]>;
+
+  GetAll: (name?: string, page?: number, limit?: number) => Promise<PersonBE[]>;
 
   ClearAll: () => Promise<void>;
 }
