@@ -22,7 +22,6 @@ export class PersonBE {
   updated_date?: Date;
   allowEditData?: boolean;
   tenant_id?: string;
-  // addressess?: PersonAddresseBE[];
-  // contactInfoList?:ContactMediaBE[];
+
 
 }

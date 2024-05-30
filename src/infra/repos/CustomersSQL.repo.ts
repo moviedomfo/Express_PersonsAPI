@@ -15,7 +15,7 @@ import { ContactInfoBE } from "@domain/Entities/ContactInfoBE";
 import { PersonAddresseBE } from "@domain/Entities/Person_AddressessBE";
 import { contact_infoAttributes } from "@infra/db/seq-models/contact_info";
 
-/**Persist to mongodb Persons */
+/**Persist to sql Persons */
 export default class PersonsRepository implements IPersonsRepository {
 
 

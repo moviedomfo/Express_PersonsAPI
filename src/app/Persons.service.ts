@@ -31,7 +31,7 @@ export default class PersonsService implements IPersonsService {
   public async Create(person: CreatePersonReq): Promise<CreatePersonRes> {
     try {
 
-
+      this._personsRepo.SearchDinamicFields
       person.discharge_date = new Date(person.discharge_date);
       // person.GeneratedDate = new Date(person.GeneratedDate);
       const personBE: PersonBE = {
