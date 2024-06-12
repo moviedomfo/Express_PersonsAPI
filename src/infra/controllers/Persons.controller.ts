@@ -4,9 +4,13 @@ import { IPersonsService } from "@domain/interfases/IPersonsService";
 import { UpdatePersonReq } from "@app/DTOs/Persons/UpdatePersonISVC";
 import { parse_Int } from "@common/helpers/paramsValidators";
 import { CreatePersonReq } from "@app/DTOs/Persons/CreatePersonISVC";
+import HttpStatusCode from "@common/Enums/HttpStatusCode";
 
 export default class PersonsController {
-  constructor(private readonly personsService: IPersonsService) { }
+  constructor(private readonly personsService: IPersonsService) {
+
+
+  }
 
   public GetAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,8 +19,8 @@ export default class PersonsController {
       const limit = parseInt(pageSize as string) || 10; // Tamaño de página
       const result = await this.personsService.GetAll(name as string, currentPage, limit);
 
-      if (result) res.status(200).send(result);
-      else res.status(204).send();
+      if (result) res.status(HttpStatusCode.OK).send(result);
+      else res.status(HttpStatusCode.NO_CONTENT).send();
     } catch (e) {
       next(e);
     }
@@ -28,7 +32,7 @@ export default class PersonsController {
 
       await this.personsService.Create(person);
 
-      res.status(200).send();
+      res.status(HttpStatusCode.CREATED).send();
     } catch (e) {
       next(e);
     }
@@ -39,7 +43,7 @@ export default class PersonsController {
 
       await this.personsService.Update(person);
 
-      res.status(200).send();
+      res.status(HttpStatusCode.NO_CONTENT).send();
     } catch (e) {
       next(e);
     }
@@ -49,8 +53,8 @@ export default class PersonsController {
     try {
       const id: number = parse_Int(req.params.id);
       const result = await this.personsService.GetById(id);
-      if (result) res.status(200).send(result);
-      else res.status(204).send();
+      if (result) res.status(HttpStatusCode.OK).send(result);
+      else res.status(HttpStatusCode.NO_CONTENT).send();
     } catch (e) {
       next(e);
     }
@@ -61,7 +65,7 @@ export default class PersonsController {
   public ClearAll = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       await this.personsService.ClearAll();
-      res.status(200).send(true);
+      res.status(HttpStatusCode.OK).send(true);
     } catch (e) {
       next(e);
     }

@@ -24,6 +24,7 @@ export class GetPersonByIdRes {
   addressess?: Addressesses_DTO[];
   dynamic_data: Fields_Data_DTO[];
   contactInfoList: ContactInfoDTO[];
+  
 }
 
 export class Addressesses_DTO {

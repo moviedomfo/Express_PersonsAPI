@@ -9,6 +9,7 @@ import { CreatePersonReq, CreatePersonRes, } from "./DTOs/Persons/CreatePersonIS
 import { GetPersonByIdRes } from "./DTOs/Persons/GetPersonByIdISVC";
 import { PersonAddresseBE } from "@domain/Entities/Person_AddressessBE";
 import { ContactInfoBE } from "@domain/Entities/ContactInfoBE";
+import { Genero } from "@common/Enums/ParamsEnums";
 
 
 // @Route("PersonsService")
@@ -18,6 +19,7 @@ export default class PersonsService implements IPersonsService {
 
   constructor(private readonly personsRepo: IPersonsRepository) {
     this._personsRepo = personsRepo;
+    
 
   }
 
@@ -31,9 +33,13 @@ export default class PersonsService implements IPersonsService {
   public async Create(person: CreatePersonReq): Promise<CreatePersonRes> {
     try {
 
+
+  
+
       this._personsRepo.SearchDinamicFields
       person.discharge_date = new Date(person.discharge_date);
       // person.GeneratedDate = new Date(person.GeneratedDate);
+
       const personBE: PersonBE = {
         code: person.code,
         slug: uuidv4(),
@@ -46,6 +52,7 @@ export default class PersonsService implements IPersonsService {
         discharge_date: person.discharge_date,
         category_id: undefined, // Set this if needed
         gender_id: person.gender_id,
+        
         enabled: true, // Set based on your business logic
         created_date: new Date(),
         created_user_id: person.created_user_id,
