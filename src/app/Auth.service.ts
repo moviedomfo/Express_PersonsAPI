@@ -57,7 +57,20 @@ export default class AuthService implements IAuthService {
       if (!user) throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_DOESNT_EXIST.toString(), "User not found", ErrorTypeEnum.SecurityException);
 
       const valid = await this.userRepository.VerifyPassword(req.password, user.passwordHash);
+      if (user.twoFA.enabled) {
+        if (!req.twoFACode) {
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toExponential(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
+          //result.codeRequested: true;
+          //return;
+        }
 
+
+
+        const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
+        if (!verified) {
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toExponential(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+        }
+      }
       if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toExponential(), "Password is not correct", ErrorTypeEnum.SecurityException);
 
       const jwt = JWTFunctions.GenerateToken(user, req.client_id, req.client_id);
@@ -96,8 +109,8 @@ export default class AuthService implements IAuthService {
     const user = await this.userRepository.FindByUserName(userName);
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
-    authenticator.options={
-      step:AppConstants.TwoFA_Expires
+    authenticator.options = {
+      step: AppConstants.TwoFA_Expires
     }
     const secret = authenticator.generateSecret();
     //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);

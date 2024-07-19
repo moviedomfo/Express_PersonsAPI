@@ -29,6 +29,13 @@ export enum LoginResultEnum {
    */
   LOGIN_USER_ACCOUNT_LOCKOUT = 1909,
 
+    /**
+   * Fallo la verificacion 2FA
+   */
+    LOGIN_USER_2FA_FAIL = 1910,
+    LOGIN_USER_2FA_CodeRequested = 1911,
+  
+
   /**
    * La contraseña debe ser cambiada.
    */
