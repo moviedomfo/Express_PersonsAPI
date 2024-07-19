@@ -1,8 +1,23 @@
+
 export interface User {
-    id: number;
-    email: string;
-    name: string;
-    status?: "Happy" | "Sad";
-    phoneNumbers: string[];
-  }
-  
+  id: string;
+  userName: string;
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordHash: string;
+
+  roles: string[];
+  twoFA: TwoFA;
+}
+
+export interface MokUsers {
+  users: User[];
+}
+
+export interface TwoFA {
+  enabled: boolean;
+  secret: string;
+  tempSecret: string
+}

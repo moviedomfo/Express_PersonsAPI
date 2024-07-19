@@ -22,5 +22,9 @@ export const AppConstants = {
   BD_PWD: get("BD_PWD").required().asString(),
   BD_USER: get("BD_USER").required().asString(),
   DB_PORT: get("BD_PORT").required().asString(),
-  
+  TwoFA_Expires: 180,
+  JWT_Expires: 10,//process.env.JWT_Expires,
+  JWT_ExpiresRefreshToken: 600,//process.env.JWT_ExpiresRefreshToken,
+  JWT_issuer: 'personsauth',//process.env.JWT_ISSUER,
+  JWT_SECRET: 'personsauth_secret',//process.env.JWT_SECRET,
 };

@@ -1,6 +1,6 @@
 {
   "name": "comerce-pub",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Express server that expose API to iteract with kafkajs",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
   "dependencies": {
     "awilix": "^7.0.3",
     "awilix-express": "^7.0.0",
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
@@ -44,7 +45,10 @@
     "helmet": "^7.0.0",
     "jwks-rsa": "^2.0.5",
     "morgan": "^1.10.0",
+    "node-json-db": "^2.3.0",
     "openapi-types": ">=7",
+    "otplib": "^12.0.1",
+    "qrcode": "^1.5.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.37.3",
     "sequelize-auto": "^0.8.8",

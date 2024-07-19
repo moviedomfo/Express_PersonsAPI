@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "6bf87313-3d4d-4a6e-89b4-6d69e096e9d1",
+      "userName": "asilva",
+      "name": "Amaro Ivan",
+      "lastName": "Silva",
+      "email": "aisilva@konecta-group.com>",
+      "password": "televisor+455",
+      "passwordHash": "$2a$12$zeJYg1vamh/x9wWKNOZJr.G6nW692puJ/2MSxk/wpCzXWaT0ebUW6",
+
+      "roles": ["admin", "manager"],
+      "twoFA": {
+        "enabled": true,
+        "secret": "",
+        "tempSecret": ""
+      }
+    },
+    {
+      "id": "c3a9c9ac-2bc7-4d3c-aeb7-c06dfdc56f95",
+      "userName": "moviedo",
+      "name": "Olecram",
+      "lastName": "Oviedo",
+      "email": "moviedo@konecta-group.com",
+      "password": "televisor+455",
+      "passwordHash": "$2a$12$zeJYg1vamh/x9wWKNOZJr.G6nW692puJ/2MSxk/wpCzXWaT0ebUW6",
+
+      "roles": ["secretadminary", "manager"],
+      "twoFA": {
+        "enabled": true,
+        "secret": "",
+        "tempSecret": ""
+      }
+    }
+  ]
+}

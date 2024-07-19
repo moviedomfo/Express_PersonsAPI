@@ -3,16 +3,18 @@ import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import {notFoundHandler} from "@common/not-found.middleware";
-import {ExpressErrorHandler} from "./common/ErrorHandle/ExpressErrorHandler";
+import { notFoundHandler } from "@common/not-found.middleware";
+import { ExpressErrorHandler } from "./common/ErrorHandle/ExpressErrorHandler";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./app/config/swagger";
 
-import {logsMiddle} from "@common/log.middlewar";
-import {personRouter} from "@infra/router/persons.router";
-import {AppConstants} from "@common/CommonConstants";
+import { logsMiddle } from "@common/log.middlewar";
+import { personRouter } from "@infra/router/persons.router";
+import { authRouter } from "@infra/router/auth.router";
+import { AppConstants } from "@common/CommonConstants";
 //import "module-alias/register";
 import "dotenv/config";
+
 
 const packageJson = require("./../package.json");
 
@@ -32,7 +34,7 @@ app.set("view engine", "html");
  */
 app.use(helmet());
 app.use(cors());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan("short"));
@@ -59,14 +61,14 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
 //   return res.send(swaggerUi.generateHTML(await import("./../../swagger.json")));
 // });
-
+app.use("/api/auth/", logsMiddle);
 app.use("/api/persons/", logsMiddle);
 //loadContainer(app);
 //app.use(loadControllers("./infra/controllers/*.ts", {cwd: __dirname}));
 
 
 app.use("/api/persons/", personRouter);
-
+app.use("/api/auth/", authRouter);
 // Attach the first Error handling Middleware
 app.use(notFoundHandler);
 app.use(ExpressErrorHandler);

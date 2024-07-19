@@ -90,4 +90,11 @@ export class DateFunctions {
     const convertida = dayjs(date).toISOString();
     return convertida;
   }
+  public static getExpirationDate(minutes: number): dayjs.Dayjs {
+    let expireAt = dayjs().add(minutes, "minute");
+    return expireAt;
+  }
+  public static getCurrent(): dayjs.Dayjs {
+    return dayjs();
+  }
 }
