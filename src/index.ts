@@ -61,14 +61,14 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // app.use("/docs", swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
 //   return res.send(swaggerUi.generateHTML(await import("./../../swagger.json")));
 // });
-app.use("/api/auth/", logsMiddle);
+app.use("/api/security/", logsMiddle);
 app.use("/api/persons/", logsMiddle);
 //loadContainer(app);
 //app.use(loadControllers("./infra/controllers/*.ts", {cwd: __dirname}));
 
 
 app.use("/api/persons/", personRouter);
-app.use("/api/auth/", authRouter);
+app.use("/api/security/", authRouter);
 // Attach the first Error handling Middleware
 app.use(notFoundHandler);
 app.use(ExpressErrorHandler);
