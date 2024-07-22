@@ -29,6 +29,7 @@
   "author": "moviedo",
   "license": "ISC",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "awilix": "^7.0.3",
     "awilix-express": "^7.0.0",
     "bcryptjs": "^2.4.3",

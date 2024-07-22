@@ -13,7 +13,7 @@ export class AuthenticationReq {
 }
 
 export class AuthenticationRes {
-  public token: string;
+  public access_token: string;
   public refresh_token: string;
 
 

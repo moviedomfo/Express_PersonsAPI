@@ -12,5 +12,6 @@ export interface UserSimpleViewDTO {
   userName: string;
   fullName: string;
   email: string;
+  twoFAenabled:boolean
   
 }

@@ -7,7 +7,7 @@
             "lastName": "Silva",
             "email": "aisilva@konecta-group.com>",
             "password": "televisor+455",
-            "passwordHash": "$2a$12$zeJYg1vamh/x9wWKNOZJr.G6nW692puJ/2MSxk/wpCzXWaT0ebUW6",
+            "passwordHash": "$2a$10$VpKFbDQ3A/2EFEU6tTC.YOgaQU2uLY1fS8zqfq3To8ulxVEY0h3Eq",
             "roles": [
                 "admin",
                 "manager"
@@ -15,7 +15,7 @@
             "twoFA": {
                 "enabled": true,
                 "secret": "CQJHA22NAIKRENLS",
-                "tempSecret": "NE3BGW3LIINEQGZP"
+                "tempSecret": "DADC65CJIUSQWBLM"
             }
         },
         {
@@ -25,15 +25,15 @@
             "lastName": "Oviedo",
             "email": "moviedo@konecta-group.com",
             "password": "televisor+455",
-            "passwordHash": "$2a$12$zeJYg1vamh/x9wWKNOZJr.G6nW692puJ/2MSxk/wpCzXWaT0ebUW6",
+            "passwordHash": "$2a$10$VpKFbDQ3A/2EFEU6tTC.YOgaQU2uLY1fS8zqfq3To8ulxVEY0h3Eq",
             "roles": [
                 "secretadminary",
                 "manager"
             ],
             "twoFA": {
-                "enabled": true,
+                "enabled": false,
                 "secret": "",
-                "tempSecret": ""
+                "tempSecret": "IBOQQGABCZLXIPAM"
             }
         }
     ]

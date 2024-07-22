@@ -8,7 +8,7 @@ import { IRefreshTokenService } from "@domain/interfases/IRefreshTokenService";
 import { RefreshTokenReq, RefreshTokenRes } from "./DTOs/Auth/RefreshTokenDto";
 import { IAuthService } from "@domain/interfases/IAuthService";
 import { AuthenticationReq, AuthenticationRes } from "./DTOs/Auth/AuthorizationDto";
-import { GetUserReq, GetUserRes, UserSimpleViewDTO } from "./DTOs/Auth/GetUserDto";
+import { GetUserRes, UserSimpleViewDTO } from "./DTOs/Auth/GetUserDto";
 import { User } from "@domain/Entities/User";
 import { IUserRepository } from "./interfases/IUserRepository";
 import GetQrImageRes from "./DTOs/Auth/GetQrImageISVC";
@@ -49,36 +49,35 @@ export default class AuthService implements IAuthService {
       const jwt = JWTFunctions.GenerateToken(user, req.client_id, req.client_id);
 
       result.refresh_token = tokenData.Token;
-      result.token = jwt;
+      result.access_token = jwt;
     }
     if (req.grant_type === "password") {
       const user = await this.userRepository.FindByUserName(req.userName);
 
       if (!user) throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_DOESNT_EXIST.toString(), "User not found", ErrorTypeEnum.SecurityException);
 
+
       const valid = await this.userRepository.VerifyPassword(req.password, user.passwordHash);
+      if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toExponential(), "Password is not correct", ErrorTypeEnum.SecurityException);
       if (user.twoFA.enabled) {
         if (!req.twoFACode) {
           throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toExponential(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
           //result.codeRequested: true;
           //return;
         }
-
-
-
         const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
         if (!verified) {
           throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toExponential(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
         }
       }
-      if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toExponential(), "Password is not correct", ErrorTypeEnum.SecurityException);
+
 
       const jwt = JWTFunctions.GenerateToken(user, req.client_id, req.client_id);
 
       const refreshToken = await this.refreshTokenService.CreateRefreshToken(user.id.toString(), "");
 
       result.refresh_token = refreshToken.Token;
-      result.token = jwt;
+      result.access_token = jwt;
     }
 
     return result;
@@ -96,6 +95,7 @@ export default class AuthService implements IAuthService {
       userName: user.userName,
       email: user.email,
       fullName: `${user.lastName}, ${user.name}`,
+      twoFAenabled: user.twoFA.enabled
     };
     result.User = userSimpleView;
 

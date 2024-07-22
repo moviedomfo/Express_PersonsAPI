@@ -1,7 +1,7 @@
 
 import { IUserRepository } from "@app/interfases/IUserRepository";
+import CryptoFunctions from "@common/helpers/CryptoFunctions";
 import { MokUsers, TwoFA, User } from "@domain/Entities/User";
-import { compare, hash } from "bcryptjs";
 const mockData = require("../../../mock/usermok.json");
 
 /**
@@ -30,25 +30,25 @@ export default class UserMockRepository implements IUserRepository {
     return user;
   }
 
-  /**
-   *
+    /**
+   * Función para generar un hash de una contraseña
    * @param password
    * @returns Hassed Passwword
    */
-  public HassPassword(password: string): Promise<string> {
-    //  Salt length to generate or salt to use, default to 10
-    const saltWorkFactor = 12;
-    return hash(password, saltWorkFactor);
-  }
-
-  /**
-   *
-   * @param password
-   * @param hash
-   * @returns
-   */
-  public async VerifyPassword(password: string, hash: string): Promise<boolean> {
-
-    return compare(password, hash);
-  }
+    public async HassPassword(password: string): Promise<string> {
+      const hash = await CryptoFunctions.HassPassword(password); // Generar el hash
+      return hash;
+  
+    }
+  
+    /**
+     *
+     * @param password
+     * @param hash
+     * @returns
+     */
+    public async VerifyPassword(password: string, hash: string): Promise<boolean> {
+      return await CryptoFunctions.VerifyPassword(password, hash);
+  
+    }
 }
