@@ -95,7 +95,7 @@ We have hused sequalize-auto to generate all models from dexisting database
    - For typescript js
 
      ```
-       yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql -c ./src/seq_db/config -o ./src/seq_db/models
+       yarn sequelize-auto -h 201.234.32.170 -d [name] -u sport -x [pw] -p 7780  --dialect mssql -c ./src/seq_db/config -o ./src/seq_db/models
      ```
 
    - For typescript
@@ -105,5 +105,5 @@ We have hused sequalize-auto to generate all models from dexisting database
 
 
      ```
-     yarn sequelize-auto -h 201.234.32.177 -d gica -u sport -x Pletorico29 -p 7780  --dialect mssql  -o ./src/infra/db/seq-models -l ts -views
+     yarn sequelize-auto -h 201.234.32.170 -d [name] -u sport -x [pw] -p 7780  --dialect mssql  -o ./src/infra/db/seq-models -l ts -views
      ```
