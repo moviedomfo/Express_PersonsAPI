@@ -1,7 +1,7 @@
-import {AppErrorToSent} from "./../ErrorHandle/AppError";
+import { AppErrorToSent } from "./../ErrorHandle/AppError";
 import HttpStatusCode from "@common/Enums/HttpStatusCode";
-import {AppError} from "@common/ErrorHandle/AppError";
-import {ErrorCodeEnum, ErrorTypeEnum} from "@common/ErrorHandle/ErrorEnums";
+import { AppError } from "@common/ErrorHandle/AppError";
+import { ErrorCodeEnum, ErrorTypeEnum } from "@common/ErrorHandle/ErrorEnums";
 export class ExeptionFunctions {
   /**
    *
@@ -22,6 +22,11 @@ export class ExeptionFunctions {
    */
   public static GetAppError = (error: any): AppError => {
     let appError: AppError;
+    if (error instanceof AppError) {
+      appError = error as AppError;
+      return appError;
+    }
+
     if ((error.name as string).startsWith("Sequelize")) {
       appError = ExeptionFunctions.Parse_SequelizeError(error);
     }

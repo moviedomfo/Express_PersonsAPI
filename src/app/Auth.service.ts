@@ -58,16 +58,16 @@ export default class AuthService implements IAuthService {
 
 
       const valid = await this.userRepository.VerifyPassword(req.password, user.passwordHash);
-      if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toExponential(), "Password is not correct", ErrorTypeEnum.SecurityException);
+      if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toString(), "Password is not correct", ErrorTypeEnum.SecurityException);
       if (user.twoFA.enabled) {
         if (!req.twoFACode) {
-          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toExponential(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
           //result.codeRequested: true;
           //return;
         }
         const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
         if (!verified) {
-          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toExponential(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
         }
       }
 
@@ -136,20 +136,17 @@ export default class AuthService implements IAuthService {
 
   public async Set2FA(userName: string, code: string): Promise<boolean> {
 
-    //const secret = authenticator.generateSecret();
-    //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
-
     const user = await this.userRepository.FindByUserName(userName);
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
 
-    const secret = user.twoFA.tempSecret;
-    const verified = authenticator.check(code, secret);
+    const tempSecret = user.twoFA.tempSecret;
+    const verified = authenticator.check(code, tempSecret);
     //const verified = authenticator.verify({ token: code, secret:user.twoFA.tempSecret });
     if (verified === false) return false;
 
     user.twoFA.enabled = true;
-    user.twoFA.secret = secret;
+    user.twoFA.secret = tempSecret;
     await this.userRepository.SetUser(user.id, user.twoFA);
 
     return true;

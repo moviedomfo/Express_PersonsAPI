@@ -31,9 +31,9 @@
                 "manager"
             ],
             "twoFA": {
-                "enabled": false,
-                "secret": "",
-                "tempSecret": "IBOQQGABCZLXIPAM"
+                "enabled": true,
+                "secret": "JMPCINT2FJMHMLIR",
+                "tempSecret": "JMPCINT2FJMHMLIR"
             }
         }
     ]
