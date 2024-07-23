@@ -109,12 +109,17 @@ export default class AuthService implements IAuthService {
     const user = await this.userRepository.FindByUserName(userName);
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
-    authenticator.options = {
-      step: AppConstants.TwoFA_Expires
-    }
+    // authenticator.options = {
+    //   step: AppConstants.TwoFA_Expires
+    // }
     const secret = authenticator.generateSecret();
     //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
-    const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
+    const uri = authenticator.keyuri(
+      encodeURIComponent(userName),
+      encodeURIComponent(AppConstants.JWT_issuer),
+      secret
+    );
+    //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
 
     const image = await QRCode.toDataURL(uri);
     user.twoFA.tempSecret = secret;
@@ -131,17 +136,20 @@ export default class AuthService implements IAuthService {
 
   public async Set2FA(userName: string, code: string): Promise<boolean> {
 
+    //const secret = authenticator.generateSecret();
+    //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
 
     const user = await this.userRepository.FindByUserName(userName);
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
 
-    let tmpSecret = user.twoFA.tempSecret;
-    const verified = authenticator.check(code, tmpSecret);
-    if (!verified) return false;
+    const secret = user.twoFA.tempSecret;
+    const verified = authenticator.check(code, secret);
+    //const verified = authenticator.verify({ token: code, secret:user.twoFA.tempSecret });
+    if (verified === false) return false;
 
     user.twoFA.enabled = true;
-    user.twoFA.secret = tmpSecret;
+    user.twoFA.secret = secret;
     await this.userRepository.SetUser(user.id, user.twoFA);
 
     return true;
