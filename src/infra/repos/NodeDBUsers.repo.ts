@@ -12,7 +12,7 @@ export default class NodeDBUsersRepository implements IUserRepository {
   private db: JsonDB;
 
   constructor() {
-    const dbPath = require('path').resolve(__dirname, '../../../mock/usermok.json');
+    const dbPath = require('path').resolve(__dirname, '../../mock/usermok.json');
     this.db = new JsonDB(new Config(dbPath, true, true, '/', true));
 
   }

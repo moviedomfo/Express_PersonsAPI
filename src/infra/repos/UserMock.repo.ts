@@ -2,7 +2,7 @@
 import { IUserRepository } from "@app/interfases/IUserRepository";
 import CryptoFunctions from "@common/helpers/CryptoFunctions";
 import { MokUsers, TwoFA, User } from "@domain/Entities/User";
-const mockData = require("../../../mock/usermok.json");
+const mockData = require("../../mock/usermok.json");
 
 /**
  * Persist users to file  
@@ -30,25 +30,25 @@ export default class UserMockRepository implements IUserRepository {
     return user;
   }
 
-    /**
-   * Función para generar un hash de una contraseña
+  /**
+ * Función para generar un hash de una contraseña
+ * @param password
+ * @returns Hassed Passwword
+ */
+  public async HassPassword(password: string): Promise<string> {
+    const hash = await CryptoFunctions.HassPassword(password); // Generar el hash
+    return hash;
+
+  }
+
+  /**
+   *
    * @param password
-   * @returns Hassed Passwword
+   * @param hash
+   * @returns
    */
-    public async HassPassword(password: string): Promise<string> {
-      const hash = await CryptoFunctions.HassPassword(password); // Generar el hash
-      return hash;
-  
-    }
-  
-    /**
-     *
-     * @param password
-     * @param hash
-     * @returns
-     */
-    public async VerifyPassword(password: string, hash: string): Promise<boolean> {
-      return await CryptoFunctions.VerifyPassword(password, hash);
-  
-    }
+  public async VerifyPassword(password: string, hash: string): Promise<boolean> {
+    return await CryptoFunctions.VerifyPassword(password, hash);
+
+  }
 }

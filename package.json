@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
-    "build": "tsc && tsc-alias && copy package.json dist",
+    "build": "tsc && tsc-alias && copy package.json dist && xcopy /E /I src\\mock dist\\mock",
     "buildlocal": "tsc && tsc-alias && copyfiles -u 1 src/**/*.json && copy package.json dist",
     "build-babel": "babel src --extensions \".ts,.js\" -d dist --copy-files",
     "cpfiles": "copyfiles -u 1 src/**/*.json dist",
