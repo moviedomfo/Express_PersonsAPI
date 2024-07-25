@@ -65,10 +65,10 @@ export default class AuthService implements IAuthService {
           //result.codeRequested: true;
           //return;
         }
-        const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
-        if (!verified) {
-          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
-        }
+        //const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
+        //if (!verified) {
+        //throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+        //}
       }
 
 
@@ -109,9 +109,9 @@ export default class AuthService implements IAuthService {
     const user = await this.userRepository.FindByUserName(userName);
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
-    // authenticator.options = {
-    //   step: AppConstants.TwoFA_Expires
-    // }
+    authenticator.options = {
+      step: AppConstants.TwoFA_Expires
+    }
     const secret = authenticator.generateSecret();
     //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
     const uri = authenticator.keyuri(
@@ -142,7 +142,6 @@ export default class AuthService implements IAuthService {
 
     const tempSecret = user.twoFA.tempSecret;
     const verified = authenticator.check(code, tempSecret);
-    //const verified = authenticator.verify({ token: code, secret:user.twoFA.tempSecret });
     if (verified === false) return false;
 
     user.twoFA.enabled = true;

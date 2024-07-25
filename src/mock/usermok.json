@@ -32,8 +32,8 @@
             ],
             "twoFA": {
                 "enabled": true,
-                "secret": "JMPCINT2FJMHMLIR",
-                "tempSecret": "JMPCINT2FJMHMLIR"
+                "secret": "CA7VWWQUEB3GIZSR",
+                "tempSecret": "CA7VWWQUEB3GIZSR"
             }
         }
     ]
