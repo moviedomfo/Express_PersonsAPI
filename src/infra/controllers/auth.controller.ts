@@ -68,4 +68,17 @@ export default class AuthController {
       next(e);
     }
   };
+  
+
+  public Disable2FA = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userName } = req.query;
+      const response = await this.authService.Disable2FA(userName as string);
+
+      res.status(HttpStatusCode.OK).send(response);
+    } catch (e) {
+      next(e);
+    }
+  };
+  
 }

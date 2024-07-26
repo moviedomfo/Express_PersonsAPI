@@ -13,5 +13,7 @@ export interface IAuthService {
   GetUser: (userName: string) => Promise<GetUserRes>;
   GetQrImage: (userName: string) => Promise<GetQrImageRes>;
   Set2FA: (userName: string, code:string) => Promise<boolean>;
+  
+  Disable2FA: (userName: string) => Promise<boolean>;
 
 }

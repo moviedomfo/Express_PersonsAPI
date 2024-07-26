@@ -61,7 +61,7 @@ export default class AuthService implements IAuthService {
       if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toString(), "Password is not correct", ErrorTypeEnum.SecurityException);
       if (user.twoFA.enabled) {
         if (!req.twoFACode) {
-          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
+          //throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
           //result.codeRequested: true;
           //return;
         }
@@ -134,6 +134,21 @@ export default class AuthService implements IAuthService {
     return result;
   }
 
+  public async Disable2FA(userName: string): Promise<boolean> {
+
+    const user = await this.userRepository.FindByUserName(userName);
+
+    if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
+
+    
+    user.twoFA.enabled = false;
+    user.twoFA.secret = '';
+    user.twoFA.tempSecret = '';
+    await this.userRepository.SetUser(user.id, user.twoFA);
+
+    return true;
+  }
+  
   public async Set2FA(userName: string, code: string): Promise<boolean> {
 
     const user = await this.userRepository.FindByUserName(userName);

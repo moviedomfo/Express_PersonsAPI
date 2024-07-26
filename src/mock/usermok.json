@@ -15,7 +15,7 @@
             "twoFA": {
                 "enabled": true,
                 "secret": "CQJHA22NAIKRENLS",
-                "tempSecret": "DADC65CJIUSQWBLM"
+                "tempSecret": "GAEEEDY6DRTWCC3C"
             }
         },
         {
@@ -31,9 +31,9 @@
                 "manager"
             ],
             "twoFA": {
-                "enabled": true,
-                "secret": "CA7VWWQUEB3GIZSR",
-                "tempSecret": "CA7VWWQUEB3GIZSR"
+                "enabled": false,
+                "secret": "",
+                "tempSecret": "GZHD6AJBNNJHEZ3B"
             }
         }
     ]
