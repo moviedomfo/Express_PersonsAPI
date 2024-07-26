@@ -17,6 +17,7 @@ export interface MokUsers {
 }
 
 export interface TwoFA {
+  expToken: string;
   enabled: boolean;
   secret: string;
   tempSecret: string

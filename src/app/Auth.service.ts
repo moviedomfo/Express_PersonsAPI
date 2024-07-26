@@ -60,15 +60,16 @@ export default class AuthService implements IAuthService {
       const valid = await this.userRepository.VerifyPassword(req.password, user.passwordHash);
       if (!valid) throw new AppError(HttpStatusCode.BAD_REQUEST, LoginResultEnum.LOGIN_USER_OR_PASSWORD_INCORRECT.toString(), "Password is not correct", ErrorTypeEnum.SecurityException);
       if (user.twoFA.enabled) {
-        if (!req.twoFACode) {
-          //throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
-          //result.codeRequested: true;
-          //return;
+
+        if (!user.twoFA.expToken) {
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
         }
+        const verified = JWTFunctions.VerifySimple(user.twoFA.expToken);
+
         //const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
-        //if (!verified) {
-        //throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
-        //}
+        if (!verified) {
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+        }
       }
 
 
@@ -140,15 +141,22 @@ export default class AuthService implements IAuthService {
 
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
 
-    
+
     user.twoFA.enabled = false;
     user.twoFA.secret = '';
     user.twoFA.tempSecret = '';
+    user.twoFA.expToken = '';
     await this.userRepository.SetUser(user.id, user.twoFA);
 
     return true;
   }
-  
+
+  /**
+   * 
+   * @param userName 
+   * @param code 
+   * @returns 
+   */
   public async Set2FA(userName: string, code: string): Promise<boolean> {
 
     const user = await this.userRepository.FindByUserName(userName);
@@ -156,11 +164,14 @@ export default class AuthService implements IAuthService {
     if (!user) throw new AppError(HttpStatusCode.NOT_FOUND, undefined, "User not found", ErrorTypeEnum.FunctionalException);
 
     const tempSecret = user.twoFA.tempSecret;
+
     const verified = authenticator.check(code, tempSecret);
     if (verified === false) return false;
 
     user.twoFA.enabled = true;
     user.twoFA.secret = tempSecret;
+    const jwt = JWTFunctions.GenerateTokenInternal(user, "internal", "internal");
+    user.twoFA.expToken = jwt;
     await this.userRepository.SetUser(user.id, user.twoFA);
 
     return true;

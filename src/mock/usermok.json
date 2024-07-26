@@ -31,9 +31,10 @@
                 "manager"
             ],
             "twoFA": {
-                "enabled": false,
-                "secret": "",
-                "tempSecret": "GZHD6AJBNNJHEZ3B"
+                "enabled": true,
+                "secret": "MALWA5RKGA7BG5AF",
+                "tempSecret": "MALWA5RKGA7BG5AF",
+                "expToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJjM2E5YzlhYy0yYmM3LTRkM2MtYWViNy1jMDZkZmRjNTZmOTUiLCJuYW1lIjoibW92aWVkbyIsImlhdCI6MTcyMjAyMDY3OCwiZXhwIjoxNzIyMDIxMjc4LCJhdWQiOlsiaW50ZXJuYWwiXSwiaXNzIjoicGVyc29uc2F1dGgifQ.XE2imsmJpatH5ajgPhFztqcs_HaTvmZykzWCxyUCvbk"
             }
         }
     ]
