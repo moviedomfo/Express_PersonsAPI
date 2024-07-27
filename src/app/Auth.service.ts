@@ -64,12 +64,18 @@ export default class AuthService implements IAuthService {
         if (!user.twoFA.expToken) {
           throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
         }
-        const verified = JWTFunctions.VerifySimple(user.twoFA.expToken);
+        try {
+          const verified = JWTFunctions.VerifySimple(user.twoFA.expToken);
+          //const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
+          if (!verified)
+            throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
 
-        //const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
-        if (!verified) {
+        } catch (e) {
           throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
         }
+
+
+
       }
 
 
@@ -121,14 +127,19 @@ export default class AuthService implements IAuthService {
       secret
     );
     //const uri = authenticator.keyuri(userName, AppConstants.JWT_issuer, secret);
+    try {
 
-    const image = await QRCode.toDataURL(uri);
-    user.twoFA.tempSecret = secret;
+      const image = await QRCode.toDataURL(uri);
+      user.twoFA.tempSecret = secret;
 
-    await this.userRepository.SetUser(user.id, user.twoFA);
+      await this.userRepository.SetUser(user.id, user.twoFA);
 
-    result.success = true;
-    result.image = image;
+      result.success = true;
+      result.image = image;
+    } catch (e) {
+      console.log(e);
+
+    }
 
 
 
