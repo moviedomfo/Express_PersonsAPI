@@ -31,10 +31,10 @@
                 "manager"
             ],
             "twoFA": {
-                "enabled": false,
-                "secret": "",
-                "tempSecret": "JY7HMTJWMJMDSWAA",
-                "expToken": ""
+                "enabled": true,
+                "secret": "CI5VWCAWNNYQUNLM",
+                "tempSecret": "CI5VWCAWNNYQUNLM",
+                "expToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJjM2E5YzlhYy0yYmM3LTRkM2MtYWViNy1jMDZkZmRjNTZmOTUiLCJuYW1lIjoibW92aWVkbyIsImlhdCI6MTcyMjE4MDk0MywiZXhwIjoxNzIyMTgxMDAzLCJhdWQiOlsiaW50ZXJuYWwiXSwiaXNzIjoicGVyc29uc2F1dGgifQ.APOtZFh4QCkkmSqamzNkE4yYSdkDzS6YtK5DfWSYIR4"
             }
         }
     ]

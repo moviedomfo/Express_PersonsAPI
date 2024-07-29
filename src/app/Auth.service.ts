@@ -12,6 +12,8 @@ import { GetUserRes, UserSimpleViewDTO } from "./DTOs/Auth/GetUserDto";
 import { User } from "@domain/Entities/User";
 import { IUserRepository } from "./interfases/IUserRepository";
 import GetQrImageRes from "./DTOs/Auth/GetQrImageISVC";
+import { randomBytes } from 'crypto';
+
 //import { qrcode } from "qrcode";
 import QRCode from 'qrcode'
 
@@ -19,6 +21,14 @@ import { authenticator } from "otplib";
 import { AppConstants } from "@common/CommonConstants";
 export default class AuthService implements IAuthService {
   constructor(private userRepository: IUserRepository, private refreshTokenService: IRefreshTokenService) { }
+
+  public GenSecret(): Promise<string> {
+
+    return new Promise<string>((resolve) => {
+      const s = randomBytes(64).toString('hex');
+      resolve(s);
+    });
+  }
 
   public async RefreshToken(req: RefreshTokenReq): Promise<RefreshTokenRes> {
 
@@ -62,16 +72,18 @@ export default class AuthService implements IAuthService {
       if (user.twoFA.enabled) {
 
         if (!user.twoFA.expToken) {
+          //Este enrror an uncia q se genere nuevamente el QR ya que esta habilkitado pero no existe jwt de expiracion
           throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_CodeRequested.toString(), "Se requiere codigo de verificacion", ErrorTypeEnum.SecurityException);
         }
         try {
           const verified = JWTFunctions.VerifySimple(user.twoFA.expToken);
-          //const verified = authenticator.check(req.twoFACode, user.twoFA.secret);
+
           if (!verified)
-            throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+            throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasos", ErrorTypeEnum.SecurityException);
 
         } catch (e) {
-          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasoso", ErrorTypeEnum.SecurityException);
+          //El token existia, por lo tanto existio 2FA. Pero fallo por que expiro y se le solicita que reenvie el codigo
+          throw new AppError(HttpStatusCode.UNAUTHORIZED, LoginResultEnum.LOGIN_USER_2FA_FAIL.toString(), "Fallo la autenticaion en dos pasos", ErrorTypeEnum.SecurityException);
         }
 
 

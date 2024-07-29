@@ -14,3 +14,4 @@ authRouter.get("/getUser", authController.GetUser);
 authRouter.get("/getQrImage", authController.GetQrImage);
 authRouter.get("/set2FA", authController.Set2FA);
 authRouter.get("/disable2FA", authController.Disable2FA);
+authRouter.get("/genSecret", authController.GenSecret);

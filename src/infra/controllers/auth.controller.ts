@@ -80,5 +80,15 @@ export default class AuthController {
       next(e);
     }
   };
+  public GenSecret = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      
+      const response = await this.authService.GenSecret();
+
+      res.status(HttpStatusCode.OK).send(response);
+    } catch (e) {
+      next(e);
+    }
+  };
   
 }
