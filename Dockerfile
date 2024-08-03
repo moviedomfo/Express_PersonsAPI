@@ -1,16 +1,16 @@
 # BUILD STEP
-FROM node:14.5.0-alpine as build
+FROM node:20.10.0-alpine as build
 
 WORKDIR /app
 COPY package.json ./
 RUN npm install
 COPY . .
 
-RUN npm run build
+RUN npm run builddocker
 
 # ADD ./dist ./dist
 # CREATE IMAGE STEP
-FROM node:14.5.0-alpine
+FROM node:20.10.0-alpine
 LABEL maintainer="@moviedo"
 
 

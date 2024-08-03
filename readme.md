@@ -32,7 +32,7 @@ pleasse ref to [Dockerize](#dockerize)
 
 ## Dockerize
 
-You can use docker to deploy the api server. In this releasse we leave a dockerfile and a docker compose ready to use
+You can use docker to deploy the api server. In this releasse we leave a dockerfile and a docker compose ready to usedocker 
 
 - generate image
 
