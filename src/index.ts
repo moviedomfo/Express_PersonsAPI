@@ -12,11 +12,11 @@ import { logsMiddle } from "@common/log.middlewar";
 import { personRouter } from "@infra/router/persons.router";
 import { authRouter } from "@infra/router/auth.router";
 import { AppConstants } from "@common/CommonConstants";
-//import "module-alias/register";
+//import "module-alias/register"; 
 import "dotenv/config";
 
-
-const packageJson = require("./../package.json");
+const packageJson = require("./../package.json")
+const ver = packageJson.version;
 
 require("dotenv").config();
 
@@ -47,7 +47,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.get("/health", (_req, res) => {
   const response = {
-    version: packageJson.version,
+    version: ver,
     appName: AppConstants.APP_CLIENT_NAME,
   };
   res.send(response);
@@ -74,14 +74,13 @@ app.use(notFoundHandler);
 app.use(ExpressErrorHandler);
 
 const URL = `${process.env.APP_BASE_URL}:${AppConstants.APP_PORT}`;
-
 /**
  * Server Activation
  */
 app.listen(AppConstants.APP_PORT, () => {
   console.log(`-------------------------------------------------------------------------------`);
-  console.log(` ${AppConstants.APP_CLIENT_NAME} V${packageJson.version}  listening on port ${AppConstants.APP_PORT}`);
+  console.log(` ${AppConstants.APP_CLIENT_NAME} V${ver}  listening on port ${AppConstants.APP_PORT}`);
   console.log(` API url ${URL}`);
-  console.log(` API doccumentation ${URL}/docs/`);
-  console.log(`-------------------------------------------------------------------------------`);
+  console.log(` API doccumentation ${URL} / docs / `);
+  console.log(`------------------------------------------------------------------------------- `);
 });
