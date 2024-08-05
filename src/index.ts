@@ -12,7 +12,6 @@ import { logsMiddle } from "@common/log.middlewar";
 import { personRouter } from "@infra/router/persons.router";
 import { authRouter } from "@infra/router/auth.router";
 import { AppConstants } from "@common/CommonConstants";
-//import "module-alias/register"; 
 import "dotenv/config";
 
 const packageJson = require("./../package.json")
